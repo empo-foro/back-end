@@ -67,19 +67,103 @@ class BaseDatos
     }
 
     /**
-     * Función para los Get de las propiedades
-     * @param $name
+     * Función para los recoger los valores de las propiedades
+     * @param $name nombre de la tabla que queremos
      * @return mixed
      */
     public function __get($name)
     {
 
-        if(property_exists(this, $name)) {
+        if (property_exists(this, $name)) {
 
             return $this->$name;
 
         }
 
     }
+
+    /**
+     * Función para cambiar las propiedades
+     * @param $name propiedad que queremos cambiar
+     * @param $value nuevo valor para la propiedad
+     * @throws Exception si hay algun error lanzaremos esta excepcion
+     */
+    public function __set($name, $value)
+    {
+        // TODO: Implement __set() method.
+        if (property_exists($this, $name) && !empty($value)) {
+
+            $this->$name = $value;
+
+        } else {
+
+            throw new Exception("Error: datos incorrectos");
+        }
+    }
+
+    /*A partir de aquí estaran las funciones CRUD*/
+
+    /**
+     * Función que nos devuelve todos los registros, pero podemo poner una condición
+     * @param string $condicion (opcional) si queremos poner alguna condición
+     * @param bool $completo
+     */
+    function getAll($condicion = "", $completo = true)
+    {
+
+        $where = "";
+        $campos = " * ";
+
+        if (!empty($condicion)) {
+            $where = " where 1 = 1";
+
+            foreach ($condicion as $clave => $valor) {
+
+                $where .= " and " . $clave . " = '" . $valor . "' ";
+            }
+        }
+
+        if (!$completo && !empty($this->showFields)) {
+
+            $campos = implode(",", $this->showFields);
+        }
+
+        $res = self::$conn->query("select " . $campos . " from " . $this->table . $where);
+        return $res->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+    /**
+     * La función tiene el mismo comentido que la anterior pero usando prepare
+     * @param array $condicion
+     * @param bool $completo
+     * @return mixed
+     */
+    function getAllPrepare($condicion = [], $completo = true)
+    {
+
+        $where = "";
+        $campos = " * ";
+
+        if (!empty($condicion)) {
+
+            $where = " where " . join(" and ", array_map(function ($valor) {
+                    return $valor . "=:" . $valor;
+                }, array_keys($condicion)));
+
+        }
+
+        if (!completo && !empty($this->showFields)) {
+
+            $campos = implode(",", $this->showFields);
+        }
+
+        $sentencia = self::$conn->prepare("select " . $campos . " from " . $this->table . $where);
+        $sentencia->execute($condicion);
+
+        return $sentencia->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
 
 }
