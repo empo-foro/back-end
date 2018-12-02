@@ -36,13 +36,9 @@ class BaseDatos
     {
 
         $this->table = $table;
-
         $this->idField = $idField;
-
         $this->fields = $fields;
-
         $this->showFields = $showFields;
-
         self::conectar();
 
     }
@@ -55,8 +51,7 @@ class BaseDatos
     {
         try {
 
-            self::$conn = new PDO("mysql:host=" . self::$server . ":dbname =" . self::$database, self::$user, self::$password, [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAME 'utf8'"]);
-
+            self::$conn = new PDO("mysql:host=" . self::$server . ";dbname=" . self::$database, self::$user, self::$password, [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"]);
             self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         } catch (Exception $ex) {
@@ -74,7 +69,7 @@ class BaseDatos
     public function __get($name)
     {
 
-        if (property_exists(this, $name)) {
+        if (property_exists($this, $name)) {
 
             return $this->$name;
 
@@ -90,7 +85,7 @@ class BaseDatos
      */
     public function __set($name, $value)
     {
-        // TODO: Implement __set() method.
+
         if (property_exists($this, $name) && !empty($value)) {
 
             $this->$name = $value;
@@ -99,6 +94,7 @@ class BaseDatos
 
             throw new Exception("Error: datos incorrectos");
         }
+
     }
 
     /*A partir de aquí estaran las funciones CRUD*/
@@ -115,11 +111,13 @@ class BaseDatos
         $campos = " * ";
 
         if (!empty($condicion)) {
+
             $where = " where 1 = 1";
 
             foreach ($condicion as $clave => $valor) {
 
                 $where .= " and " . $clave . " = '" . $valor . "' ";
+
             }
         }
 
@@ -128,8 +126,8 @@ class BaseDatos
             $campos = implode(",", $this->showFields);
         }
 
-        $res = self::$conn->query("select " . $campos . " from " . $this->table . $where);
-        return $res->fetchAll(PDO::FETCH_ASSOC);
+        $resultado = self::$conn->query("select " . $campos . " from " . $this->table . $where);
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
 
     }
 
@@ -156,12 +154,111 @@ class BaseDatos
         if (!completo && !empty($this->showFields)) {
 
             $campos = implode(",", $this->showFields);
+
         }
 
-        $sentencia = self::$conn->prepare("select " . $campos . " from " . $this->table . $where);
-        $sentencia->execute($condicion);
+        $resultado = self::$conn->prepare("select " . $campos . " from " . $this->table . $where);
+        $resultado->execute($condicion);
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
 
-        return $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Esta función nos devuelve la fila de la tabla que tenga este id
+     * @param int $id valor del campo clave que queremos recoger
+     * @return devuelve los datos del campo recogido de la base de datos
+     */
+    function getById($id)
+    {
+
+        $resultado = self::$conn->query("select * from " . $this->table . " where " . $this->idField . " = " . $id);
+        return $resultado->fetch(PDO::FETCH_ASSOC);
+
+    }
+
+    /**
+     * Esta función nos devuelve la fila de la tabla que tenga esta nif
+     * @param string $nif NIF por el que estamos buscado
+     * @return
+     */
+    function getByNif($nif)
+    {
+        try {
+
+            $resultado = self::$conn->query("select * from " . $this->table . " where nif " . " = " . "$nif");
+            return $resultado->fetch(PDO::FETCH_ASSOC);
+
+        } catch (Exception $ex) {
+
+            return $ex->getMessage();
+
+        }
+
+
+    }
+
+    function logIn($nif, $password)
+    {
+        try {
+
+            $resultado = self::$conn->query("select * from " . $this->table . " where nif " . " = " . $nif);
+            return $resultado->fetch(PDO::FETCH_ASSOC);
+
+        } catch (Exception $ex) {
+
+            return $ex->getMessage();
+
+        }
+    }
+
+    /**
+     * Esta función toma como parámetro un array associativo y nos inserta en la tabla
+     * un registro donde la clave del array hace referencia al campo de la tabla y
+     * el valor del array al valor de la tabla
+     * @param array $valores
+     */
+    function insert($valores)
+    {
+        try {
+
+            $campos = join(",", array_keys($valores));
+            $parametros = ":" . join(",:", array_keys($valores));
+            $sql = "insert into " . $this->table . "($campos) values ($parametros)";
+            $resultado = self::$conn->prepare($sql);
+            $resultado->execute($valores);
+            return self::$conn->lastInsertId(); //Añadido para que nos devuelva el id del registro creado
+            
+        } catch (Exception $ex) {
+
+            echo $ex->getMessage();
+
+        }
+    }
+
+    /**
+     * Esta función modifica el elemento de la base de datos con el id que pasamos
+     * con los valores del array asociativo
+     * @param int $id id del elemento a modificar
+     * @param array $valores Array asociativo con los valores a modificar
+     */
+    function update($id, $valores)
+    {
+
+        try {
+
+            $campos = join(",", array_map(function ($v) {
+                return $v . "=:" . $v;
+            }), array_keys($valores));
+
+            $sql = "update " . $this->table . " set " . $campos . " where " . $this->idField . " = " . $id;
+            $resultado = self::$conn->prepare($sql);
+            $resultado->execute($valores);
+
+        } catch (Exception $ex) {
+
+            echo $ex->getMessage();
+
+        }
 
     }
 
