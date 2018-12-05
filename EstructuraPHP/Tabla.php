@@ -6,7 +6,7 @@
  * Time: 12:54
  */
 
-class BaseDatos
+abstract class Tabla
 {
 
     static $server = "localhost";
@@ -14,12 +14,12 @@ class BaseDatos
     static $password = "";
     static $database = "empo";
 
-    private $table; //Nombre de la tabla
-    private $idField; //Nombre de la primary key de la tabla
-    private $fields; //Array con los nombres de los campos de la tabla (opcional)
-    private $showFields; //
+    protected $table; //Nombre de la tabla
+    protected $idField; //Nombre de la primary key de la tabla
+    protected $fields; //Array con los nombres de los campos de la tabla (opcional)
+    protected $showFields; //
 
-    static private $conn;
+    static protected $conn;
 
 
     /**
@@ -66,7 +66,7 @@ class BaseDatos
      * @param $name nombre de la tabla que queremos
      * @return mixed
      */
-    public function __get($name)
+    function __get($name)
     {
 
         if (property_exists($this, $name)) {
@@ -83,7 +83,7 @@ class BaseDatos
      * @param $value nuevo valor para la propiedad
      * @throws Exception si hay algun error lanzaremos esta excepcion
      */
-    public function __set($name, $value)
+    function __set($name, $value)
     {
 
         if (property_exists($this, $name) && !empty($value)) {
@@ -168,7 +168,7 @@ class BaseDatos
      * @param int $id valor del campo clave que queremos recoger
      * @return devuelve los datos del campo recogido de la base de datos
      */
-    function getById($id)
+    protected function getById($id)
     {
 
         $resultado = self::$conn->query("select * from " . $this->table . " where " . $this->idField . " = " . $id);
@@ -177,47 +177,12 @@ class BaseDatos
     }
 
     /**
-     * Esta función nos devuelve la fila de la tabla que tenga esta nif
-     * @param string $nif NIF por el que estamos buscado
-     * @return
-     */
-    function getByNif($nif)
-    {
-        try {
-
-            $resultado = self::$conn->query("select * from " . $this->table . " where nif " . " = " . "$nif");
-            return $resultado->fetch(PDO::FETCH_ASSOC);
-
-        } catch (Exception $ex) {
-
-            return $ex->getMessage();
-
-        }
-
-
-    }
-
-    function logIn($nif, $password)
-    {
-        try {
-
-            $resultado = self::$conn->query("select * from " . $this->table . " where nif " . " = " . $nif);
-            return $resultado->fetch(PDO::FETCH_ASSOC);
-
-        } catch (Exception $ex) {
-
-            return $ex->getMessage();
-
-        }
-    }
-
-    /**
      * Esta función toma como parámetro un array associativo y nos inserta en la tabla
      * un registro donde la clave del array hace referencia al campo de la tabla y
      * el valor del array al valor de la tabla
      * @param array $valores
      */
-    function insert($valores)
+    protected function insert($valores)
     {
         try {
 
@@ -227,7 +192,7 @@ class BaseDatos
             $resultado = self::$conn->prepare($sql);
             $resultado->execute($valores);
             return self::$conn->lastInsertId(); //Añadido para que nos devuelva el id del registro creado
-            
+
         } catch (Exception $ex) {
 
             echo $ex->getMessage();
@@ -241,7 +206,7 @@ class BaseDatos
      * @param int $id id del elemento a modificar
      * @param array $valores Array asociativo con los valores a modificar
      */
-    function update($id, $valores)
+    protected function update($id, $valores)
     {
 
         try {
@@ -262,5 +227,9 @@ class BaseDatos
 
     }
 
+    abstract function loadById($id);
 
+    abstract function updateOrInsert();
+
+    abstract function delete();
 }

@@ -6,7 +6,7 @@
 <body>
 
 <?php
-require_once 'BaseDatos.php';
+require_once 'Tabla.php';
 session_start();
 $cursos_tabla = new BaseDatos("curso", "id_curso", "*");
 $usuarios_tabla = new BaseDatos("usuario", "id_usuario", "*");

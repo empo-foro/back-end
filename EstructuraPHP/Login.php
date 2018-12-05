@@ -11,7 +11,7 @@
 </form>
 
 <?php
-require_once 'BaseDatos.php';
+require_once 'Tabla.php';
 $usuarios_tabla = new BaseDatos("centro", "id_centro", "*");
 
 try {
