@@ -11,7 +11,7 @@ abstract class Tabla
 
     static $server = "localhost";
     static $user = "root";
-    static $password = "";
+    static $passwd = "";
     static $database = "empo";
 
     protected $table; //Nombre de la tabla
@@ -51,7 +51,7 @@ abstract class Tabla
     {
         try {
 
-            self::$conn = new PDO("mysql:host=" . self::$server . ";dbname=" . self::$database, self::$user, self::$password, [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"]);
+            self::$conn = new PDO("mysql:host=" . self::$server . ";dbname=" . self::$database, self::$user, self::$passwd, [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"]);
             self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         } catch (Exception $ex) {
@@ -213,7 +213,7 @@ abstract class Tabla
 
             $campos = join(",", array_map(function ($v) {
                 return $v . "=:" . $v;
-            }), array_keys($valores));
+            }, array_keys($valores)));
 
             $sql = "update " . $this->table . " set " . $campos . " where " . $this->idField . " = " . $id;
             $resultado = self::$conn->prepare($sql);

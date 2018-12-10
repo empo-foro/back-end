@@ -2,50 +2,175 @@
 /**
  * Created by PhpStorm.
  * User: daw
- * Date: 5/12/18
- * Time: 12:16
+ * Date: 10/12/18
+ * Time: 13:04
  */
 
-class Centro extends Tabla
+class Usuario extends Tabla
 {
-
-    private $idcentro; //set y get
-    private $nif; //set y get
-    private $nombre; //set y get
-    private $password; //set
-    private $biografia; //set y get
-    private $descripcion; //set y get
-    private $imagen_personal; //set y get
-    private $email; //set y get
-    private $num_fields = 8;
-
-    public function __construct()
-    {
-        $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-        parent::__construct("centro", "idcentro", $fields);
-    }
+    private $id_usuario;
+    private $nif;
+    private $nombre;
+    private $password;
+    private $tipo;
+    private $imagen_personal;
+    private $email;
+    private $biografia;
+    private $id_centro;
 
 
+    //GETTERS Y SETTERS
 
     /**
-     * Esta función nos devuelve la fila de la tabla que tenga esta nif
-     * @param string $nif NIF por el que estamos buscado
-     * @return
+     * @return mixed
      */
-    function getByNif($nif)
+    public function getIdUsuario()
     {
-        try {
+        return $this->id_usuario;
+    }
 
-            $resultado = self::$conn->query("select * from " . $this->table . " where nif " . " = " . "$nif");
-            return $resultado->fetch(PDO::FETCH_ASSOC);
+    /**
+     * @return mixed
+     */
+    public function getNif()
+    {
+        return $this->nif;
+    }
 
-        } catch (Exception $ex) {
+    /**
+     * @param mixed $nif
+     */
+    public function setNif($nif): void
+    {
+        $this->nif = $nif;
+    }
 
-            return $ex->getMessage();
+    /**
+     * @return mixed
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
 
+    /**
+     * @param mixed $nombre
+     */
+    public function setNombre($nombre): void
+    {
+        $this->nombre = $nombre;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password): void
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImagenPersonal()
+    {
+        return $this->imagen_personal;
+    }
+
+    /**
+     * @param mixed $imagen_personal
+     */
+    public function setImagenPersonal($imagen_personal): void
+    {
+        $this->imagen_personal = $imagen_personal;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBiografia()
+    {
+        return $this->biografia;
+    }
+
+    /**
+     * @param mixed $biografia
+     */
+    public function setBiografia($biografia): void
+    {
+        $this->biografia = $biografia;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdCentro()
+    {
+        return $this->id_centro;
+    }
+
+    /**
+     * Getter
+     * @param nombre $name nombre del campo
+     * @return mixed valor del campo
+     * @throws Exception
+     */
+    function __get($name)
+    {
+        $metodo = "get$name";
+        if (method_exists($this, $metodo)) {
+            return $this->$metodo();
+        } else {
+            throw new Exception("Propiedad desconocida");
         }
+    }
 
-
+    /**
+     * Setter
+     * @param propiedad $name nombre del campo
+     * @param nuevo $value nuevo valor para el campo
+     * @throws Exception
+     */
+    function __set($name, $value)
+    {
+        $metodo = "set$name";
+        if (method_exists($this, $metodo)) {
+            return $this->$metodo($value);
+        } else {
+            throw new Exception("Propiedad desconocida");
+        }
     }
 
     /**
@@ -58,7 +183,7 @@ class Centro extends Tabla
     {
         try {
 
-            $resultado = self::$conn->query("select * from " . $this->table . " where nif " . " = " . $nif);
+            $resultado = self::$conn->query("select * from " . $this->table . " where nif " . " = " . $nif. "AND password = " . $password);
             return $resultado->fetch(PDO::FETCH_ASSOC);
 
         } catch (Exception $ex) {
@@ -68,64 +193,20 @@ class Centro extends Tabla
         }
     }
 
-    /**
-     * Función que elimina un registro de la base de datos si conicide el id con el que le pasamos
-     * @throws Exception
-     */
-    function delete()
-    {
-        if (!empty($this->idcentro)) {
-            $this->deleteById($this->idcentro);
-            $this->idcentro = null;
-            $this->nombre = null;
-        } else {
-            throw new Exception("No hay registro para borrar");
-        }
-    }
 
-    /**
-     * Función que nos devuelve un registro de la base de datos si conicide con el id que le pasamos
-     * @param $id
-     * @throws Exception
-     */
     function loadById($id)
     {
-        $centro = $this->getById($id);
-
-        if (!empty($centro)) {
-            $this->idcentro = $id;
-            $this->nombre = $centro["nombre"];
-        } else {
-            throw new Exception("No existe ese registro");
-        }
+        // TODO: Implement loadById() method.
     }
 
-    /**
-     * Función que nos devuelve un array associativo, con los datos del objeto de la clase
-     * @return array
-     */
-    private function valores()
-    {
-        $valores = array_map(function ($v) {
-            return $this->$v;
-        }, $this->fields);
-        return array_combine($this->fields, $valores);
-    }
-
-    /**
-     * Función que modifica o inserta un registro, dependiendo de la variable idcentro de la clase
-     */
     function updateOrInsert()
     {
-        $centro = $this->valores();
-        unset($centro['idcentro']);
-        if (empty($this->idcentro)) { //Si el idcentro de la clase esta vacío, insertaremos un nuevo registro en la base de datos
-            $this->insert($centro);
-            $this->idcentro = self::$conn->lastInsertId();
-        } else { //Si el idcentro de la clase tiene un valor, modificaremos el registro que coincida con el id de la clase en la base de datos
-            $this->update($this->idcentro, $centro);
-        }
+        // TODO: Implement updateOrInsert() method.
     }
 
+    function delete()
+    {
+        // TODO: Implement delete() method.
+    }
 
 }
