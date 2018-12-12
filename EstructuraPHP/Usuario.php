@@ -5,6 +5,7 @@
  * Date: 10/12/18
  * Time: 13:04
  */
+require_once 'Tabla.php';
 
 class Usuario extends Tabla
 {
@@ -16,8 +17,14 @@ class Usuario extends Tabla
     private $imagen_personal;
     private $email;
     private $biografia;
-    private $id_centro;
+    private $centro;
+    private $num_fields = 9;
 
+    public function __construct()
+    {
+        $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
+        parent::__construct("Usuario", "id_usuario", $fields);
+    }
 
     //GETTERS Y SETTERS
 
@@ -85,6 +92,11 @@ class Usuario extends Tabla
         return $this->tipo;
     }
 
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+    }
+
     /**
      * @return mixed
      */
@@ -136,9 +148,14 @@ class Usuario extends Tabla
     /**
      * @return mixed
      */
-    public function getIdCentro()
+    public function getCentro(): Centro
     {
-        return $this->id_centro;
+        return $this->centro;
+    }
+
+    public function setCentro($centro)
+    {
+        $this->centro = $centro;
     }
 
     /**
@@ -183,7 +200,7 @@ class Usuario extends Tabla
     {
         try {
 
-            $resultado = self::$conn->query("select * from " . $this->table . " where nif " . " = " . $nif. "AND password = " . $password);
+            $resultado = self::$conn->query("select * from " . $this->table . " where nif " . " = " . $nif . "AND password = " . $password);
             return $resultado->fetch(PDO::FETCH_ASSOC);
 
         } catch (Exception $ex) {
@@ -196,17 +213,68 @@ class Usuario extends Tabla
 
     function loadById($id)
     {
-        // TODO: Implement loadById() method.
+        $usuario = $this->getById($id);
+
+        if (!empty($usuario)) {
+            $this->id_usuario = $id;
+            $this->nombre = $usuario["nombre"];
+            $this->nif = $usuario["nif"];
+            $this->biografia = $usuario["biografia"];
+            $this->password = $usuario["password"];
+            $this->tipo = $usuario["tipo"];
+            $this->imagen_personal = $usuario["imagen_personal"];
+            $this->email = $usuario["email"];
+
+        } else {
+            throw new Exception("No existe ese registro");
+        }
     }
 
+    /**
+     * Función que nos devuelve un array associativo, con los datos del objeto de la clase
+     * @return array
+     */
+    private function valores()
+    {
+        $valores = array_map(function ($v) { //If v es un objeto tenemos que sacar el valor id de ese objeto
+            return $this->$v;
+        }, $this->fields);
+        return array_combine($this->fields, $valores);
+    }
+
+    /**
+     *
+     */
     function updateOrInsert()
     {
-        // TODO: Implement updateOrInsert() method.
+        $usuario = $this->valores();
+        unset($usuario['id_usuario']);
+        $this->centro->updateOrInsert();
+        $usuario["id_centro"] = $this->centro->id_centro;
+        unset($usuario["centro"]);
+        if (empty($this->id_usuario)) {
+            $this->insert($usuario);
+            $this->id_usuario = self::$conn->lastInsertId();
+        } else {
+            $this->update($this->id_usuario, $usuario);
+        }
     }
 
     function delete()
     {
-        // TODO: Implement delete() method.
+        if (!empty($this->id_usuario)) {
+            $this->deleteById($this->id_usuario);
+            $this->id_usuario = null;
+            $this->nif = null;
+            $this->biografia = null;
+            $this->password = null;
+            $this->tipo = null;
+            $this->imagen_personal = null;
+            $this->email = null;
+            $this->centro = null;
+        } else {
+            throw new Exception("No existe ese registro para borrar");
+        }
     }
 
 }

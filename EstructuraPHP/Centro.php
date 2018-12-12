@@ -32,7 +32,7 @@ class Centro extends Tabla
     /**
      * @return mixed
      */
-    public function getIdCentro()
+    public function getId_Centro()
     {
         return $this->id_centro;
     }
@@ -208,9 +208,9 @@ class Centro extends Tabla
      */
     function delete()
     {
-        if (!empty($this->idcentro)) {
-            $this->deleteById($this->idcentro);
-            $this->idcentro = null;
+        if (!empty($this->id_centro)) {
+            $this->deleteById($this->id_centro);
+            $this->id_centro = null;
             $this->nombre = null;
         } else {
             throw new Exception("No hay registro para borrar");
