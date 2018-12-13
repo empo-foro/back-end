@@ -210,7 +210,11 @@ class Usuario extends Tabla
         }
     }
 
-
+    /**
+     * Función que nos devuelve un registro de la base de datos si conicide con el id que le pasamos
+     * @param $id
+     * @throws Exception
+     */
     function loadById($id)
     {
         $usuario = $this->getById($id);
@@ -243,7 +247,7 @@ class Usuario extends Tabla
     }
 
     /**
-     *
+     * Función que modifica o inserta un registro, dependiendo de la variable idcentro de la clase
      */
     function updateOrInsert()
     {
@@ -260,6 +264,10 @@ class Usuario extends Tabla
         }
     }
 
+    /**
+     * Función que elimina un registro de la base de datos si conicide el id con el que le pasamos
+     * @throws Exception
+     */
     function delete()
     {
         if (!empty($this->id_usuario)) {
