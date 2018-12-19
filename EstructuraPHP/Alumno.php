@@ -10,8 +10,8 @@ require_once 'Tabla.php';
 class Alumno extends Tabla
 {
     private $id_alumno;
-    private $id_usuario;
-    private $id_curso;
+    private $usuario;
+    private $curso;
     private $num_fields=3;
 
     public function __construct(){
@@ -23,7 +23,7 @@ class Alumno extends Tabla
     /**
      * @return mixed
      */
-    public function getIdAlumno()
+    public function getId_Alumno()
     {
         return $this->id_alumno;
     }
@@ -31,7 +31,7 @@ class Alumno extends Tabla
     /**
      * @param mixed $id_alumno
      */
-    public function setIdAlumno($id_alumno): void
+    public function setId_Alumno($id_alumno): void
     {
         $this->id_alumno = $id_alumno;
     }
@@ -39,7 +39,7 @@ class Alumno extends Tabla
     /**
      * @return mixed
      */
-    public function getIdUsuario()
+    public function getUsuario()
     {
         return $this->usuario;
     }
@@ -47,7 +47,7 @@ class Alumno extends Tabla
     /**
      * @param mixed $usuario
      */
-    public function setIdUsuario($usuario): void
+    public function setUsuario($usuario): void
     {
         $this->usuario = $usuario;
     }
@@ -55,7 +55,7 @@ class Alumno extends Tabla
     /**
      * @return mixed
      */
-    public function getIdCurso()
+    public function getCurso()
     {
         return $this->curso;
     }
@@ -63,7 +63,7 @@ class Alumno extends Tabla
     /**
      * @param mixed $curso
      */
-    public function setIdCurso($curso): void
+    public function setCurso($curso): void
     {
         $this->curso = $curso;
     }
@@ -110,8 +110,11 @@ class Alumno extends Tabla
     $alumno=$this->getById($id);
     if(!empty($alumno)){
         $this->id_alumno=$id;
-        $this->usuario=$id;
-        $this->curso=$id;
+
+        $usuario = new Usuario();
+        $usuario->loadById($alumno['id_usuario']);
+        $this->usuario = $usuario;
+
     }else{
         throw new Exception("No existe ese registro");
     }

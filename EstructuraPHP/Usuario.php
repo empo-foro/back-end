@@ -31,7 +31,7 @@ class Usuario extends Tabla
     /**
      * @return mixed
      */
-    public function getIdUsuario()
+    public function getId_Usuario()
     {
         return $this->id_usuario;
     }
@@ -148,12 +148,12 @@ class Usuario extends Tabla
     /**
      * @return mixed
      */
-    public function getCentro(): Centro
+    public function getCentro()
     {
         return $this->centro;
     }
 
-    public function setCentro($centro)
+    public function setCentro($centro): void
     {
         $this->centro = $centro;
     }
@@ -228,6 +228,10 @@ class Usuario extends Tabla
             $this->tipo = $usuario["tipo"];
             $this->imagen_personal = $usuario["imagen_personal"];
             $this->email = $usuario["email"];
+
+            $centro = new Centro();
+            $centro->loadById($usuario['id_centro']);
+            $this->centro = $centro;
 
         } else {
             throw new Exception("No existe ese registro");

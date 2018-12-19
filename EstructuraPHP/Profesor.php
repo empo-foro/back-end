@@ -96,7 +96,10 @@ class Profesor extends Tabla
 
         if (!empty($profesor)) {
             $this->id_profesor = $id;
-            $this->usuario = $id;
+
+            $u=new Usuario();
+            $u->loadById($profesor['id_usuario']);
+            $this->usuario = $u;
         } else {
             throw new Exception("No existe ese registro");
         }

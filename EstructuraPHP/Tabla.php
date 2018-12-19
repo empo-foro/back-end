@@ -227,6 +227,23 @@ abstract class Tabla
 
     }
 
+    /**
+     * Elimina el registro que tenga el id que le pasamos
+     * @param $id
+     */
+    protected function deleteById($id)
+    {
+        try {
+
+            self::$conn->exec("delete from " . $this->table . " where " . $this->idField . " = " . $id);
+
+        } catch (Exception $ex) {
+
+            echo $ex->getMessage();
+
+        }
+    }
+
     abstract function loadById($id);
 
     abstract function updateOrInsert();
