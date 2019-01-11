@@ -119,7 +119,13 @@ class Tema extends Tabla
 
     public function delete()
     {
-        // TODO: Implement delete() method.
+        if (!empty($this->id_tema)){
+            $this->deleteById($this->id_tema);
+            $this->id_tema=null;
+            $this->nombre=null;
+        }else{
+            throw new Exception("No hay registro para borrar");
+        }
     }
 
 }
