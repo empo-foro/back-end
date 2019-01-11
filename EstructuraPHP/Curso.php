@@ -77,6 +77,7 @@ class Curso extends Tabla
      * Esta función cambiara el valor de una propiedad pedida si existe el Setter de esa propiedad
      * @param propiedad $name Nombre de la propiedad que queremos cambiar
      * @param nuevo $value Nuevo valor para la propiedad a cambiar
+     * @return Carga la función si existe dentro de la clase
      * @throws Exception Lanza una expeción si no encuentra el Setter de la propiedad pedida
      */
     function __set($name, $value)
@@ -129,6 +130,9 @@ class Curso extends Tabla
         return array_combine($this->fields, $valores);
     }
 
+    /**
+     * Función que inserta o modifica un registro
+     */
     function updateOrInsert()
     {
         $curso = $this->valores();
@@ -144,8 +148,17 @@ class Curso extends Tabla
         }
     }
 
+    /**
+     * Función que elimina un registro, si el campo id del objeto coincide con el id de un registro en la base de datos
+     */
     function delete()
     {
-        // TODO: Implement delete() method.
+        if(!empty($this->id_curso)) {
+            $this->deleteById($this->id_curso);
+            $this->id_curso = null;
+            $this->nombre = null;
+        } else {
+            throw new Exception("Este curso no existe dentro de la base de datos");
+        }
     }
 }
