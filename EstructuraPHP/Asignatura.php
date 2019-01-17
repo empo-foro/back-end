@@ -1,46 +1,45 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: DAW
- * Date: 13/12/18
- * Time: 12:25
+ * User: daw
+ * Date: 17/1/19
+ * Time: 12:35
  */
-
 require_once 'Tabla.php';
 
-class Alumno extends Tabla
+class Asignatura extends Tabla
 {
-    private $id_alumno;
-    private $usuario;
+    private $id_asignatura;
+    private $nombre;
     private $curso;
     private $num_fields = 3;
 
     public function __construct()
     {
         $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-        parent::__construct("alumno", "id_alumno", $fields);
+        parent::__construct("asignatura", "id_asignatura", $fields);
     }
 
     /* Setters y Getters */
 
-    public function getId_Alumno()
+    public function getId_Asignatura()
     {
-        return $this->id_alumno;
+        return $this->id_asignatura;
     }
 
-    public function setId_Alumno($id_alumno): void
+    public function setId_Asignatura($id_asignatura): void
     {
-        $this->id_alumno = $id_alumno;
+        $this->id_asignatura = $id_asignatura;
     }
 
-    public function getUsuario()
+    public function getNombre()
     {
-        return $this->usuario;
+        return $this->nombre;
     }
 
-    public function setUsuario($usuario): void
+    public function setNombre($nombre): void
     {
-        $this->usuario = $usuario;
+        $this->nombre = $nombre;
     }
 
     public function getCurso()
@@ -91,21 +90,18 @@ class Alumno extends Tabla
      * @param $id
      * @throws Exception
      */
-    public function loadById($id)
+    function loadById($id)
     {
 
-        $alumno = $this->getById($id);
+        $asignatura = $this->getById($id);
 
-        if (!empty($alumno)) {
+        if(!empty($asignatura)) {
 
-            $this->id_alumno = $id;
-
-            $usuario = new Usuario();
-            $usuario->loadById($alumno['id_usuario']);
-            $this->usuario = $usuario;
+            $this->id_asignatura = $id;
+            $this->nombre = $asignatura['nombre'];
 
             $curso = new Curso();
-            $curso->loadById($alumno['id_curso']);
+            $curso->loadById($asignatura['id_curso']);
             $this->curso = $curso;
 
         } else {
@@ -128,46 +124,40 @@ class Alumno extends Tabla
     /**
      * Función que modifica o inserta un registro
      */
-    public function updateOrInsert()
+    function updateOrInsert()
     {
 
-        $alumno = $this->valores();
-
-        unset($alumno['id_alumno']);
-
-        $this->usuario->updateOrInsert();
-        $alumno["id_usuario"] = $this->usuario->id_usuario;
-
-        unset($alumno["usuario"]);
+        $asignatura = $this->valores();
+        unset($asignatura['id_asignatura']);
 
         $this->curso->updateOrInsert();
-        $alumno['id_curso'] = $this->curso->id_curso;
+        $asignatura['curso'] = $this->curso->id_curso;
+        unset($asignatura['curso']);
 
-        unset($alumno['curso']);
-
-        if (empty($this->id_alumno)) {
-
-            $this->insert($alumno);
-            $this->id_alumno = self::$conn->lastInsertId();
-
+        if(empty($this->id_asignatura)) {
+            $this->insert($asignatura);
+            $this->id_asignatura = self::$conn->lastInsertId();
         } else {
-            $this->update($this->id_alumno, $alumno);
+            $this->update($this->id_asignatura, $asignatura);
         }
+
     }
 
     /**
      * Función que elimina un registro de la base de datos si conicide el id con el que le pasamos
      * @throws Exception
      */
-    public function delete()
+    function delete()
     {
-        if (!empty($this->id_alumno)) {
-            $this->deleteById($this->id_alumno);
-            $this->id_alumno = null;
-            $this->usuario = null;
+
+        if(!empty($this->id_asignatura)) {
+            $this->deleteById($this->id_asignatura);
+            $this->id_asignatura = null;
+            $this->nombre = null;
             $this->curso = null;
         } else {
             throw new Exception("No existe este registro");
         }
+
     }
 }

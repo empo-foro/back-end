@@ -29,67 +29,43 @@ class Usuario extends Tabla
             parent::__construct("Usuario", "id_usuario", $fields);
         }
 
-    //GETTERS Y SETTERS
+    /* Getters y Setters */
 
-    /**
-     * @return mixed
-     */
     public function getId_Usuario()
     {
         return $this->id_usuario;
     }
 
-    /**
-     * @return mixed
-     */
     public function getNif()
     {
         return $this->nif;
     }
 
-    /**
-     * @param mixed $nif
-     */
     public function setNif($nif): void
     {
         $this->nif = $nif;
     }
 
-    /**
-     * @return mixed
-     */
     public function getNombre()
     {
         return $this->nombre;
     }
 
-    /**
-     * @param mixed $nombre
-     */
     public function setNombre($nombre): void
     {
         $this->nombre = $nombre;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPassword()
     {
         return $this->password;
     }
 
-    /**
-     * @param mixed $password
-     */
     public function setPassword($password): void
     {
         $this->password = $password;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTipo()
     {
         return $this->tipo;
@@ -100,57 +76,36 @@ class Usuario extends Tabla
         $this->tipo = $tipo;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getImagenPersonal()
+    public function getImagen_Personal()
     {
         return $this->imagen_personal;
     }
 
-    /**
-     * @param mixed $imagen_personal
-     */
-    public function setImagenPersonal($imagen_personal): void
+    public function setImagen_Personal($imagen_personal): void
     {
         $this->imagen_personal = $imagen_personal;
     }
 
-    /**
-     * @return mixed
-     */
     public function getEmail()
     {
         return $this->email;
     }
 
-    /**
-     * @param mixed $email
-     */
     public function setEmail($email): void
     {
         $this->email = $email;
     }
 
-    /**
-     * @return mixed
-     */
     public function getBiografia()
     {
         return $this->biografia;
     }
 
-    /**
-     * @param mixed $biografia
-     */
     public function setBiografia($biografia): void
     {
         $this->biografia = $biografia;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCentro()
     {
         return $this->centro;
@@ -181,6 +136,7 @@ class Usuario extends Tabla
      * Esta función cambiara el valor de una propiedad pedida si existe el Setter de esa propiedad
      * @param propiedad $name Nombre de la propiedad que queremos cambiar
      * @param nuevo $value Nuevo valor para la propiedad a cambiar
+     * @return Carga la función si existe dentro de la clase
      * @throws Exception Lanza una expeción si no encuentra el Setter de la propiedad pedida
      */
     function __set($name, $value)
@@ -259,10 +215,13 @@ class Usuario extends Tabla
     function updateOrInsert()
     {
         $usuario = $this->valores();
+
         unset($usuario['id_usuario']);
+
         $this->centro->updateOrInsert();
         $usuario["id_centro"] = $this->centro->id_centro;
         unset($usuario["centro"]);
+
         if (empty($this->id_usuario)) {
             $this->insert($usuario);
             $this->id_usuario = self::$conn->lastInsertId();

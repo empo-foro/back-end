@@ -39,7 +39,10 @@ $profesor->updateOrInsert();
 var_dump($profesor);
 */
 
+require_once 'Asignatura.php';
 
+$curso = new Curso();
+$curso->loadById(3);
 
 
 ?>
