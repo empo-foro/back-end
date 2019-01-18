@@ -108,6 +108,7 @@ class Tema extends Tabla
 
     function updateOrInsert(){
         $tema=$this->valores();
+
         unset($tema['id_tema']);
         if(empty($this->id_tema)){
             $this->insert($tema);
