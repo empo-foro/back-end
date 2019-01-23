@@ -19,45 +19,33 @@ class Profesor extends Tabla
         parent::__construct("profesor", "id_profesor", $fields);
     }
 
-    //SETTERS Y GETTERS
+    /* Setters y Getters */
 
-    /**
-     * @return mixed
-     */
     public function getId_Profesor()
     {
         return $this->id_profesor;
     }
 
-    /**
-     * @param mixed $id_profesor
-     */
     public function setId_Profesor($id_profesor)
     {
         $this->id_profesor = $id_profesor;
     }
 
-    /**
-     * @return mixed
-     */
     public function getUsuario() : Usuario
     {
         return $this->usuario;
     }
 
-    /**
-     * @param mixed $id_usuario
-     */
     public function setUsuario($usuario)
     {
         $this->usuario = $usuario;
     }
 
     /**
-     *Getter
-     * @param nombre $name nombre del campo
-     * @return mixed valor del campo
-     * @throws Exception
+     * Esta función nos devolvera el valor de una propiedad pedida si existe el Getter de esa propiedad
+     * @param nombre $name Nombre de la propiedad que queremos recoger
+     * @return mixed Nos devuelve el metódo Getter de la propiedad pedida
+     * @throws Exception Lanza una excepción si no encuentra el Getter de la propiedad pedida
      */
     function __get($name)
     {
@@ -70,10 +58,11 @@ class Profesor extends Tabla
     }
 
     /**
-     * Setter
-     * @param propiedad $name nombre del campo
-     * @param nuevo $value nuevo valor para el campo
-     * @throws Exception
+     * Esta función cambiara el valor de una propiedad pedida si existe el Setter de esa propiedad
+     * @param propiedad $name Nombre de la propiedad que queremos cambiar
+     * @param nuevo $value Nuevo valor para la propiedad a cambiar
+     * @return Carga la función si existe dentro de la clase
+     * @throws Exception Lanza una expeción si no encuentra el Setter de la propiedad pedida
      */
     function __set($name, $value)
     {
@@ -86,9 +75,9 @@ class Profesor extends Tabla
     }
 
     /**
-     * Función que nos devuelve un registro de la base de datos si conicide con el id que le pasamos
-     * @param $id
-     * @throws Exception
+     * Función que carga los datos de un registro dentro del objeto
+     * @param $id Id del registro que queremos recoger
+     * @throws Exception Lanza un expeción si no encuentra un registro con el id indicado
      */
     public function loadById($id)
     {
@@ -118,7 +107,7 @@ class Profesor extends Tabla
     }
 
     /**
-     * Función que modifica o inserta un registro, dependiendo de la variable idcentro de la clase
+     * Función que inserta o modifica un registro
      */
     public function updateOrInsert()
     {
@@ -136,8 +125,7 @@ class Profesor extends Tabla
     }
 
     /**
-     * Función que elimina un registro de la base de datos si conicide el id con el que le pasamos
-     * @throws Exception
+     * Función que elimina un registro, si el campo id del objeto coincide con el id de un registro en la base de datos
      */
     public function delete()
     {

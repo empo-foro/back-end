@@ -44,6 +44,9 @@ require_once 'Asignatura.php';
 $curso = new Curso();
 $curso->loadById(3);
 
+$usu = new Usuario();
+$usu->loadById(1);
+$usu->delete();
 
 ?>
 </body>

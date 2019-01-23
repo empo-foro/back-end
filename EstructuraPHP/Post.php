@@ -2,20 +2,23 @@
 /**
  * Created by PhpStorm.
  * User: daw
- * Date: 19/12/18
- * Time: 12:54
+ * Date: 18/1/19
+ * Time: 12:10
  */
-require_once 'Tabla.php';
+require_once "Tabla.php";
 
-class Curso extends Tabla
+class Post extends Tabla
 {
-    private $id_curso;
-    private $nombre;
-    private $centro;
-    private $num_fields = 3;
+    private $id_post;
+    private $titulo;
+    private $cuerpo;
+    private $fecha;
+    private $cerrado;
+    private $alumno;
+    private $num_fields = 6;
 
     /**
-     * Curso constructor.
+     * Post constructor.
      */
     public function __construct()
     {
@@ -26,35 +29,64 @@ class Curso extends Tabla
 
     /* Getters y Setters */
 
-    public function getId_Curso()
+    public function getId_Post()
     {
-        return $this->id_curso;
+        return $this->id_post;
     }
 
-    public function setId_Curso($id_curso): void
+    public function setId_Post($id_post): void
     {
-        $this->id_curso = $id_curso;
+        $this->id_post = $id_post;
     }
 
-    public function getNombre()
+    public function getTitulo()
     {
-        return $this->nombre;
+        return $this->titulo;
     }
 
-    public function setNombre($nombre): void
+    public function setTitulo($titulo): void
     {
-        $this->nombre = $nombre;
+        $this->titulo = $titulo;
     }
 
-
-    public function getCentro()
+    public function getCuerpo()
     {
-        return $this->centro;
+        return $this->cuerpo;
     }
 
-    public function setCentro($centro): void
+    public function setCuerpo($cuerpo): void
     {
-        $this->centro = $centro;
+        $this->cuerpo = $cuerpo;
+    }
+
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    public function setFecha($fecha): void
+    {
+        $this->fecha = $fecha;
+    }
+
+    public function getCerrado()
+    {
+        return $this->cerrado;
+    }
+
+    public function setCerrado($cerrado): void
+    {
+        $this->cerrado = $cerrado;
+    }
+
+    public function getAlumno()
+    {
+        return $this->alumno;
+    }
+
+    public function setAlumno($alumno): void
+    {
+        $this->alumno = $alumno;
     }
 
     /**
@@ -90,7 +122,6 @@ class Curso extends Tabla
         }
     }
 
-
     /**
      * Función que carga los datos de un registro dentro del objeto
      * @param $id Id del registro que queremos recoger
@@ -98,31 +129,31 @@ class Curso extends Tabla
      */
     function loadById($id)
     {
+        $post = $this->getById($id);
 
-        $curso = $this->getById($id);
+        if (!empty($post)) {
 
-        if(!empty($curso)) {
+            $this->id_post = $id;
+            $this->titulo = $post['titulo'];
+            $this->cuerpo = $post['cuerpo'];
+            $this->fecha = $post['fecha'];
+            $this->cerrado = $post['cerrado'];
 
-            $this->id_curso = $id;
-            $this->nombre = $curso['nombre'];
-
-            $centro = new Centro();
-            $centro->loadById($curso['id_centro']);
-            $this->centro = $centro;
+            $alumno = new Alumno();
+            $alumno->loadById($post['id_alumno']);
+            $this->alumno = $alumno;
 
         } else {
 
             throw new Exception("No existe un registro con ese id");
 
         }
-
     }
 
     /**
-     * Función que nos devuelve un array asociativo con los datos del objeto de la clase
-     * @return array
+     * Función qe nos devuelve un array asociativo con los datos del objeto de la clase
      */
-    private function valores()
+    function valores()
     {
         $valores = array_map(function ($v) {
             return $this->$v;
@@ -130,35 +161,16 @@ class Curso extends Tabla
         return array_combine($this->fields, $valores);
     }
 
-    /**
-     * Función que inserta o modifica un registro
-     */
     function updateOrInsert()
     {
-        $curso = $this->valores();
-        unset($curso['id_curso']);
-        $this->centro->updateOrInsert();
-        $curso['id_centro'] = $this->centro->id_centro;
-        unset($curso['centro']);
-        if(empty($this->id_curso)) {
-            $this->insert($curso);
-            $this->id_curso = self::$conn->lastInsertId();
-        } else {
-            $this->update($this->id_curso, $curso);
-        }
+        $post = $this->valores();
+        unset($post["id_post"]);
+
+        $this->
     }
 
-    /**
-     * Función que elimina un registro, si el campo id del objeto coincide con el id de un registro en la base de datos
-     */
     function delete()
     {
-        if(!empty($this->id_curso)) {
-            $this->deleteById($this->id_curso);
-            $this->id_curso = null;
-            $this->nombre = null;
-        } else {
-            throw new Exception("Este curso no existe dentro de la base de datos");
-        }
+        // TODO: Implement delete() method.
     }
 }
