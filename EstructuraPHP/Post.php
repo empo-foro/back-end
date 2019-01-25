@@ -161,16 +161,42 @@ class Post extends Tabla
         return array_combine($this->fields, $valores);
     }
 
+    /**
+     * Función que inserta o modifica un registro
+     */
     function updateOrInsert()
     {
         $post = $this->valores();
         unset($post["id_post"]);
 
-        $this->
+        $this->alumno->updateOrInsert();
+        $post['id_alumno'] = $this->alumno->id_alumno;
+        unset($post['alumno']);
+
+        if(empty($this->id_post)) {
+            $this->insert($post);
+            $this->id_post == self::lastInsertId();
+        } else {
+            $this->update($this->id_post, $post);
+        }
+
     }
 
+    /**
+     * Función que elimina un registro, si el campo id del objeto coincide con el id de un registro en la base de datos
+     */
     function delete()
     {
-        // TODO: Implement delete() method.
+        if(!empty($this->id_post)) {
+            $this->deleteById($this->id_post);
+            $this->id_post = null;
+            $this->titulo = null;
+            $this->cuerpo = null;
+            $this->fecha = null;
+            $this->cerrado = null;
+            $this->alumno = null;
+        } else {
+            throw new Exception("El post que quieres borrar no existe");
+        }
     }
 }
