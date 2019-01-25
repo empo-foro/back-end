@@ -28,9 +28,6 @@ class Profesor_vs_Asignatura extends Tabla
         return $this->id_profesor_vs_asignatura;
     }
 
-    /**
-     * @param mixed $id_profesor_vs_asignatura
-     */
     public function setId_Profesor_Vs_Asignatura($id_profesor_vs_asignatura): void
     {
         $this->id_profesor_vs_asignatura = $id_profesor_vs_asignatura;
