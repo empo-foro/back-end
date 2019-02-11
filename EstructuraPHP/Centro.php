@@ -10,14 +10,14 @@ require_once 'Tabla.php';
 class Centro extends Tabla
 {
 
-    private $id_centro; //set y get
-    private $nif; //set y get
-    private $nombre; //set y get
-    private $password; //set
-    private $biografia; //set y get
-    private $descripcion; //set y get
-    private $imagen_personal; //set y get
-    private $email; //set y get
+    private $id_centro;
+    private $nif;
+    private $nombre;
+    private $password;
+    private $biografia;
+    private $descripcion;
+    private $imagen_personal;
+    private $email;
     private $num_fields = 8;
 
     public function __construct()
@@ -27,133 +27,88 @@ class Centro extends Tabla
     }
 
 
-    //SETTERS Y GETTERS
+    /* Setters y Getters */
 
-    /**
-     * @return mixed
-     */
     public function getId_Centro()
     {
         return $this->id_centro;
     }
 
-    /**
-     * @return mixed
-     */
     public function getNif()
     {
         return $this->nif;
     }
 
-    /**
-     * @param mixed $nif
-     */
     public function setNif($nif): void
     {
         $this->nif = $nif;
     }
 
-    /**
-     * @return mixed
-     */
     function getNombre()
     {
         return $this->nombre;
     }
 
-    /**
-     * @param mixed $nombre
-     */
     function setNombre($nombre): void
     {
         $this->nombre = $nombre;
     }
 
-    /**
-     * @return mixed
-     */
     function getPassword()
     {
         return $this->password;
     }
 
-    /**
-     * @param mixed $password
-     */
     function setPassword($password): void
     {
         $this->password = $password;
     }
 
-    /**
-     * @return mixed
-     */
     function getBiografia()
     {
         return $this->biografia;
     }
 
-    /**
-     * @param mixed $biografia
-     */
     function setBiografia($biografia): void
     {
         $this->biografia = $biografia;
     }
 
-    /**
-     * @return mixed
-     */
     function getDescripcion()
     {
         return $this->descripcion;
     }
 
-    /**
-     * @param mixed $descripcion
-     */
     function setDescripcion($descripcion): void
     {
         $this->descripcion = $descripcion;
     }
 
-    /**
-     * @return mixed
-     */
-    function getImagenPersonal()
+    function getImagen_Personal()
     {
         return $this->imagen_personal;
     }
 
-    /**
-     * @param mixed $imagen_personal
-     */
-    function setImagenPersonal($imagen_personal): void
+    function setImagen_Personal($imagen_personal): void
     {
         $this->imagen_personal = $imagen_personal;
     }
 
-    /**
-     * @return mixed
-     */
     function getEmail()
     {
         return $this->email;
     }
 
-    /**
-     * @param mixed $email
-     */
     function setEmail($email): void
     {
         $this->email = $email;
     }
 
     /**
-     * Getter
-     * @param nombre $name nombre del campo
-     * @return mixed valor del campo
-     * @throws Exception
+     * Esta función nos devolvera el valor de una propiedad pedida si existe el Getter de esa propiedad
+     * @param nombre $name Nombre de la propiedad que queremos recoger
+     * @return mixed Nos devuelve el metódo Getter de la propiedad pedida
+     * @throws Exception Lanza una excepción si no encuentra el Getter de la propiedad pedida
      */
     function __get($name)
     {
@@ -166,10 +121,11 @@ class Centro extends Tabla
     }
 
     /**
-     * Setter
-     * @param propiedad $name nombre del campo
-     * @param nuevo $value nuevo valor para el campo
-     * @throws Exception
+     * Esta función cambiara el valor de una propiedad pedida si existe el Setter de esa propiedad
+     * @param propiedad $name Nombre de la propiedad que queremos cambiar
+     * @param nuevo $value Nuevo valor para la propiedad a cambiar
+     * @return Carga la función si existe dentro de la clase
+     * @throws Exception Lanza una expeción si no encuentra el Setter de la propiedad pedida
      */
     function __set($name, $value)
     {
@@ -180,7 +136,6 @@ class Centro extends Tabla
             throw new Exception("Propiedad desconocida");
         }
     }
-
 
     /**
      * Función que nos devuelve un registro si el usuario se ha encontrado dentro del la base de datos
@@ -267,5 +222,12 @@ class Centro extends Tabla
         }
     }
 
+    /**
+     * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
+     * @return array Devuelve un Array asociativo con los datos del objeto
+     */
+    function serialize() {
+        return $this->valores();
+    }
 
 }

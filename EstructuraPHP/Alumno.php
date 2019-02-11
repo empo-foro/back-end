@@ -170,4 +170,6 @@ class Alumno extends Tabla
             throw new Exception("No existe este registro");
         }
     }
+
+
 }
