@@ -6,7 +6,7 @@
  * Time: 12:11
  */
 
-class HTTP
+class Http
 {
     private $httpVersion = "HTTP/1.1";
 

@@ -6,7 +6,7 @@
  * Time: 12:16
  */
 
-require_once 'HTML.php';
+require_once 'Http.php';
 require_once 'Response.php';
 
 $controller = filter_input(INPUT_GET, "controller"); //Tabla con la que va a trabajar
@@ -52,4 +52,11 @@ if ($verb == "GET") {
         $objeto->$c = $v;
     }
     $objeto->updateOrInsert();
+} else if($verb == "DELETE") {
+    if (empty($id)) {
+        $http->setHttpHeaders(400, new Response("Bad request"));
+        die();
+    }
+    $objeto->load($id);
+    $objeto->delete();
 }
