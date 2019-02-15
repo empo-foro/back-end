@@ -18,7 +18,6 @@ $centro->loadById(1);
 /*
 $profesor = new Profesor();
 $profesor->loadById(2);
-//Te necesito Juan Pablo, necesito borrar el profesor pero este no tiene el mismo id que el usuario
 $profesor->delete();
 */
 

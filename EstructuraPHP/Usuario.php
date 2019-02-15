@@ -6,6 +6,7 @@
  * Time: 13:04
  */
 require_once 'Tabla.php';
+require_once 'Centro.php';
 
 class Usuario extends Tabla
 {
@@ -116,6 +117,13 @@ class Usuario extends Tabla
         $this->centro = $centro;
     }
 
+    public function setId_Centro($id): void
+    {
+        $centro=new Centro();
+        $centro->loadById($id);
+        $this->centro = $centro;
+    }
+
     /**
      * Esta función nos devolvera el valor de una propiedad pedida si existe el Getter de esa propiedad
      * @param nombre $name Nombre de la propiedad que queremos recoger
@@ -215,7 +223,6 @@ class Usuario extends Tabla
     function updateOrInsert()
     {
         $usuario = $this->valores();
-
         unset($usuario['id_usuario']);
 
         $this->centro->updateOrInsert();

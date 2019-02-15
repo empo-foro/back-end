@@ -34,12 +34,12 @@ if ($verb == "GET") {
     }
 } else if ($verb == "POST") {
     $raw=file_get_contents("php://input");
-    echo $raw;
     $datos=json_decode($raw);
     foreach($datos as $c=>$v){
         $objeto->$c=$v;
     }
     $objeto->updateOrInsert();
+
 } else if ($verb == "PUT") {
     if (empty($id)) {
         $http->setHttpHeaders(400, new Response("Bad request"));
