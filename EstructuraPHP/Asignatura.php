@@ -139,7 +139,7 @@ class Asignatura extends Tabla
         unset($asignatura['id_asignatura']);
 
         $this->curso->updateOrInsert();
-        $asignatura['curso'] = $this->curso->id_curso;
+        $asignatura['id_curso'] = $this->curso->id_curso;
         unset($asignatura['curso']);
 
         if(empty($this->id_asignatura)) {
