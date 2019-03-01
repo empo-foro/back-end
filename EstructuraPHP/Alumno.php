@@ -7,6 +7,8 @@
  */
 
 require_once 'Tabla.php';
+require_once 'Usuario.php';
+require_once 'Curso.php';
 
 class Alumno extends Tabla
 {
@@ -52,6 +54,21 @@ class Alumno extends Tabla
     {
         $this->curso = $curso;
     }
+
+    public function setId_Usuario($id): void
+    {
+        $alumno = new Usuario();
+        $alumno->loadById($id);
+        $this->usuario = $alumno;
+    }
+
+    public function setId_Curso($id): void
+    {
+        $curso = new Curso();
+        $curso->loadById($id);
+        $this->curso = $curso;
+    }
+
 
     /**
      * Esta función nos devolvera el valor de una propiedad pedida si existe el Getter de esa propiedad
@@ -149,9 +166,13 @@ class Alumno extends Tabla
 
             $this->insert($alumno);
             $this->id_alumno = self::$conn->lastInsertId();
+            return $alumno;
 
         } else {
+
             $this->update($this->id_alumno, $alumno);
+            return $alumno;
+
         }
     }
 

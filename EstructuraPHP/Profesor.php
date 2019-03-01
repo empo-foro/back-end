@@ -7,6 +7,8 @@
  */
 
 require_once 'Tabla.php';
+require_once 'Usuario.php';
+
 class Profesor extends Tabla
 {
     private $id_profesor;
@@ -38,6 +40,13 @@ class Profesor extends Tabla
 
     public function setUsuario($usuario)
     {
+        $this->usuario = $usuario;
+    }
+
+    public function setId_Usuario($id):void
+    {
+        $usuario = new Usuario();
+        $usuario->loadById($id);
         $this->usuario = $usuario;
     }
 

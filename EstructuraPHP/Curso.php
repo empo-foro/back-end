@@ -6,6 +6,7 @@
  * Time: 12:54
  */
 require_once 'Tabla.php';
+require_once 'Centro.php';
 
 class Curso extends Tabla
 {
@@ -54,6 +55,13 @@ class Curso extends Tabla
 
     public function setCentro($centro): void
     {
+        $this->centro = $centro;
+    }
+
+    public function setId_Centro($id): void
+    {
+        $centro = new Centro();
+        $centro->loadById($id);
         $this->centro = $centro;
     }
 
