@@ -6,7 +6,7 @@
  * Time: 12:35
  */
 require_once 'Tabla.php';
-
+require_once 'Curso.php';
 class Asignatura extends Tabla
 {
     private $id_asignatura;
@@ -159,5 +159,13 @@ class Asignatura extends Tabla
             throw new Exception("No existe este registro");
         }
 
+    }
+
+    /**
+     * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
+     * @return array Devuelve un Array asociativo con los datos del objeto
+     */
+    function serialize() {
+        return $this->valores();
     }
 }

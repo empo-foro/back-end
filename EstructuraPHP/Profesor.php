@@ -7,6 +7,7 @@
  */
 
 require_once 'Tabla.php';
+require_once 'Usuario.php';
 class Profesor extends Tabla
 {
     private $id_profesor;
@@ -137,4 +138,13 @@ class Profesor extends Tabla
             throw new Exception("No existe ese registro para borrar");
         }
     }
+
+    /**
+     * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
+     * @return array Devuelve un Array asociativo con los datos del objeto
+     */
+    function serialize() {
+        return $this->valores();
+    }
+
 }

@@ -7,13 +7,16 @@
  */
 
 require_once 'Tabla.php';
+require_once 'Profesor.php';
+require_once 'Asignatura.php';
+
 
 class Profesor_vs_Asignatura extends Tabla
 {
     private $id_profesor_vs_asignatura;
-    private $id_profesor;
-    private $id_asignatura;
-    private $num_fields;
+    private $profesor;
+    private $asignatura;
+    private $num_fields = 3;
 
     public function __construct()
     {
@@ -101,9 +104,22 @@ class Profesor_vs_Asignatura extends Tabla
         $Profesor_vs_Asignatura=$this->getById($id);
 
         if (!empty($Profesor_vs_Asignatura)){
+
             $this->id_Profesor_vs_Asignatura= $id;
+
+            $profesor = new Profesor();
+            $profesor->loadById($Profesor_vs_Asignatura['id_profesor']);
+            $this->profesor = $profesor;
+
+            $asignatura = new Asignatura();
+            $asignatura->loadById($Profesor_vs_Asignatura['id_asignatura']);
+            $this->asignatura = $asignatura;
+
+            /*
             $this->id_profesor = $Profesor_vs_Asignatura["profesor"];
             $this->id_asignatura= $Profesor_vs_Asignatura['asignatura'];
+            */
+
         }else{
             throw new Exception("No existe ese registro");
         }
@@ -140,6 +156,14 @@ class Profesor_vs_Asignatura extends Tabla
         }else{
             throw new Exception("No hay registro para borrar");
         }
+    }
+
+    /**
+     * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
+     * @return array Devuelve un Array asociativo con los datos del objeto
+     */
+    function serialize() {
+        return $this->valores();
     }
 
 }
