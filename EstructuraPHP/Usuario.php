@@ -235,8 +235,11 @@ class Usuario extends Tabla
         unset($usuario["centro"]);
 
         if (empty($this->id_usuario)) {
+
             $this->insert($usuario);
             $this->id_usuario = self::$conn->lastInsertId();
+
+
         } else {
             $this->update($this->id_usuario, $usuario);
         }
