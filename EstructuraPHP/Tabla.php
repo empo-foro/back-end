@@ -26,10 +26,10 @@ abstract class Tabla
      * El constructor necesita el nombre de la tabla y el nombre del campo clave
      * Opcionalmente podemos indicar los campos que tiene la tabla y aquellos que queremos mostrar
      * Cuando se haga una selección
-     * @param type $table nombre de la tabla
-     * @param type $idField nombre de la primary key de la tabla
-     * @param type $fields (opcional) campos de la tabla
-     * @param type $showFields (opcional) campos que queremos mostrar de la tabla
+     * @param String $table nombre de la tabla
+     * @param String $idField nombre de la primary key de la tabla
+     * @param mixed $fields (opcional) campos de la tabla
+     * @param mixed $showFields (opcional) campos que queremos mostrar de la tabla
      */
 
     public function __construct($table, $idField, $fields = "", $showFields = "")
@@ -63,7 +63,7 @@ abstract class Tabla
 
     /**
      * Función para los recoger los valores de las propiedades
-     * @param $name nombre de la tabla que queremos
+     * @param String $name nombre de la tabla que queremos
      * @return mixed
      */
     function __get($name)
@@ -79,9 +79,9 @@ abstract class Tabla
 
     /**
      * Función para cambiar las propiedades
-     * @param $name propiedad que queremos cambiar
-     * @param $value nuevo valor para la propiedad
-     * @throws Exception si hay algun error lanzaremos esta excepcion
+     * @param String $name propiedad que queremos cambiar
+     * @param String $value nuevo valor para la propiedad
+     * @throws Exception si hay algún error lanzaremos esta excepción
      */
     function __set($name, $value)
     {
@@ -97,12 +97,13 @@ abstract class Tabla
 
     }
 
-    /*A partir de aquí estaran las funciones CRUD*/
+    /*A partir de aquí estarán las funciones CRUD*/
 
     /**
-     * Función que nos devuelve todos los registros, pero podemo poner una condición
+     * Función que nos devuelve todos los registros, como parámetro opcional podemos añadir una condición
      * @param string $condicion (opcional) si queremos poner alguna condición
      * @param bool $completo
+     * @return mixed
      */
     function getAll($condicion = "", $completo = true)
     {
@@ -181,6 +182,7 @@ abstract class Tabla
      * un registro donde la clave del array hace referencia al campo de la tabla y
      * el valor del array al valor de la tabla
      * @param array $valores
+     * @return
      */
     protected function insert($valores)
     {

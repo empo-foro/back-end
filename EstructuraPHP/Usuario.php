@@ -7,6 +7,8 @@
  */
 require_once 'Tabla.php';
 require_once 'Centro.php';
+require_once 'Alumno.php';
+require_once 'Profesor.php';
 
 class Usuario extends Tabla
 {
@@ -130,10 +132,10 @@ class Usuario extends Tabla
     }
 
     /**
-     * Esta función nos devolvera el valor de una propiedad pedida si existe el Getter de esa propiedad
-     * @param nombre $name Nombre de la propiedad que queremos recoger
-     * @return mixed Nos devuelve el metódo Getter de la propiedad pedida
-     * @throws Exception Lanza una excepción si no encuentra el Getter de la propiedad pedida
+     * Esta función nos devolverá el valor de una propiedad pedida si existe el get de esa propiedad
+     * @param String $name Nombre de la propiedad que queremos recoger
+     * @return mixed Nos devuelve el método get de la propiedad pedida
+     * @throws Exception Lanza una excepción si no encuentra el get de la propiedad
      */
     function __get($name)
     {
@@ -147,10 +149,10 @@ class Usuario extends Tabla
 
     /**
      * Esta función cambiara el valor de una propiedad pedida si existe el Setter de esa propiedad
-     * @param propiedad $name Nombre de la propiedad que queremos cambiar
-     * @param nuevo $value Nuevo valor para la propiedad a cambiar
-     * @return Carga la función si existe dentro de la clase
-     * @throws Exception Lanza una expeción si no encuentra el Setter de la propiedad pedida
+     * @param mixed $name Nombre de la propiedad que queremos cambiar
+     * @param mixed $value Nuevo valor para la propiedad a cambiar
+     * @return mixed Carga la función si existe dentro de la clase
+     * @throws Exception Lanza una excepción si no encuentra el Setter de la propiedad pedida
      */
     function __set($name, $value)
     {
@@ -206,7 +208,7 @@ class Usuario extends Tabla
             $this->centro = $centro;
 
         } else {
-            throw new Exception("No existe ese registro");
+            throw new Exception("No existe un registro con este identificador");
         }
     }
 
