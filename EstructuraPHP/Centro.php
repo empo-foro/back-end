@@ -147,7 +147,7 @@ class Centro extends Tabla
     {
         try {
 
-            $resultado = self::$conn->query("select * from " . $this->table . " where email " . " = '" . $email . "' AND password = " . $password);
+            $resultado = self::$conn->query("select * from " . $this->table . " where email " . " = '" . $email . "' AND password = '" . $password . "'");
             return $resultado->fetch(PDO::FETCH_ASSOC);
 
         } catch (Exception $ex) {
