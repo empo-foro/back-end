@@ -74,7 +74,9 @@ if ($verb == "GET") {
     foreach ($datos as $c => $v) {
         $objeto->$c = $v;
     }
+
     $objeto->updateOrInsert();
+    $http->setHttpHeaders(200, new Response("Success"));
 
 } else if ($verb == "PUT") {
     if (empty($id)) {

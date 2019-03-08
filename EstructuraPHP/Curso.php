@@ -57,6 +57,13 @@ class Curso extends Tabla
         $this->centro = $centro;
     }
 
+    public function setId_Centro($id): void
+    {
+        $centro = new Centro();
+        $centro->loadById($id);
+        $this->centro = $centro;
+    }
+
     /**
      * Esta función nos devolvera el valor de una propiedad pedida si existe el Getter de esa propiedad
      * @param nombre $name Nombre de la propiedad que queremos recoger

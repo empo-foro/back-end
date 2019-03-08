@@ -7,6 +7,7 @@
  */
 require_once 'Tabla.php';
 require_once 'Curso.php';
+
 class Asignatura extends Tabla
 {
     private $id_asignatura;
@@ -49,6 +50,13 @@ class Asignatura extends Tabla
 
     public function setCurso($curso): void
     {
+        $this->curso = $curso;
+    }
+
+    public function setId_Curso($id): void
+    {
+        $curso = new Curso();
+        $curso->loadById($id);
         $this->curso = $curso;
     }
 
@@ -131,14 +139,18 @@ class Asignatura extends Tabla
         unset($asignatura['id_asignatura']);
 
         $this->curso->updateOrInsert();
-        $asignatura['curso'] = $this->curso->id_curso;
+        $asignatura['id_curso'] = $this->curso->id_curso;
         unset($asignatura['curso']);
 
         if(empty($this->id_asignatura)) {
+
             $this->insert($asignatura);
             $this->id_asignatura = self::$conn->lastInsertId();
+
         } else {
+
             $this->update($this->id_asignatura, $asignatura);
+
         }
 
     }

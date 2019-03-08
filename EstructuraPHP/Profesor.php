@@ -42,6 +42,13 @@ class Profesor extends Tabla
         $this->usuario = $usuario;
     }
 
+    public function setId_Usuario($id):void
+    {
+        $usuario = new Usuario();
+        $usuario->loadById($id);
+        $this->usuario = $usuario;
+    }
+
     /**
      * Esta función nos devolvera el valor de una propiedad pedida si existe el Getter de esa propiedad
      * @param nombre $name Nombre de la propiedad que queremos recoger
