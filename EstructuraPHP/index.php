@@ -74,7 +74,7 @@ if ($verb == "GET") {
     foreach ($datos as $c => $v) {
         $objeto->$c = $v;
     }
-
+    //var_dump($objeto);
     $objeto->updateOrInsert();
     $http->setHttpHeaders(200, new Response("Success"));
 
