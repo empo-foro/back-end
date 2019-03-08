@@ -7,7 +7,6 @@
  */
 require_once 'Tabla.php';
 require_once 'Centro.php';
-
 class Curso extends Tabla
 {
     private $id_curso;
@@ -169,4 +168,12 @@ class Curso extends Tabla
             throw new Exception("Este curso no existe dentro de la base de datos");
         }
     }
+    /**
+     * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
+     * @return array Devuelve un Array asociativo con los datos del objeto
+     */
+    function serialize() {
+        return $this->valores();
+    }
+
 }

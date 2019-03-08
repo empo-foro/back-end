@@ -10,27 +10,27 @@ require_once 'Tabla.php';
 
 class Profesor_vs_Asignatura extends Tabla
 {
-    private $id_profesor_vs_asignatura;
+    private $id;
     private $id_profesor;
     private $id_asignatura;
-    private $num_fields;
+    private $num_fields=3;
 
     public function __construct()
     {
         $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-        parent::__construct("Profesor_vs_Asignatura", "id_profesor_vs_asignatura", $fields);
+        parent::__construct("profesor_vs_asignatura", "id", $fields);
     }
 
     /* Setters y Getters */
 
-    public function getId_Profesor_Vs_Asignatura()
+    public function getId()
     {
-        return $this->id_profesor_vs_asignatura;
+        return $this->id;
     }
 
-    public function setId_Profesor_Vs_Asignatura($id_profesor_vs_asignatura): void
+    public function setId($id): void
     {
-        $this->id_profesor_vs_asignatura = $id_profesor_vs_asignatura;
+        $this->id = $id;
     }
 
     public function getId_Profesor()
@@ -101,10 +101,18 @@ class Profesor_vs_Asignatura extends Tabla
         $Profesor_vs_Asignatura=$this->getById($id);
 
         if (!empty($Profesor_vs_Asignatura)){
-            $this->id_Profesor_vs_Asignatura= $id;
-            $this->id_profesor = $Profesor_vs_Asignatura["profesor"];
-            $this->id_asignatura= $Profesor_vs_Asignatura['asignatura'];
-        }else{
+
+            $this->id = $id;
+
+            $profesor = new Profesor();
+            $profesor->loadById($Profesor_vs_Asignatura['id_profesor']);
+            $this->profesor = $profesor;
+
+            $asignatura = new Asignatura();
+            $asignatura->loadById($Profesor_vs_Asignatura['id_asignatura']);
+            $this->asignatura = $asignatura;
+
+            }else{
             throw new Exception("No existe ese registro");
         }
     }
@@ -119,14 +127,14 @@ class Profesor_vs_Asignatura extends Tabla
 
     function updateOrInsert()
     {
-        $Profesor_vs_Asignatura=$this->valores();
+        $profesor_vs_asignatura=$this->valores();
 
-        unset($Profesor_vs_Asignatura['id_profesor_vs_asignatura']);
-        if(empty($this->id_profesor_vs_asignatura)){
-            $this->insert($Profesor_vs_Asignatura);
-            $this->id_profesor_vs_asignatura=self::$conn->lastInsertId();
+        unset($profesor_vs_asignatura['id']);
+        if(empty($this->id)){
+            $this->insert($profesor_vs_asignatura);
+            $this->id=self::$conn->lastInsertId();
         }else{
-            $this->update($this->id_profesor_vs_asignatura, $Profesor_vs_Asignatura);
+            $this->update($this->id, $profesor_vs_asignatura);
         }
     }
 
@@ -140,6 +148,14 @@ class Profesor_vs_Asignatura extends Tabla
         }else{
             throw new Exception("No hay registro para borrar");
         }
+    }
+
+    /**
+     * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
+     * @return array Devuelve un Array asociativo con los datos del objeto
+     */
+    function serialize() {
+        return $this->valores();
     }
 
 }

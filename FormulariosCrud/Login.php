@@ -5,31 +5,54 @@
 </head>
 <body>
 <form method="post">
-    NIF: <input type="text" maxlength="9" minlength="8" name="nif"/> <br/>
+    Email: <input type="email" pattern="[^ @]*@[^ @]*" name="email"/> <br/>
     Password: <input type="password" name="password"> <br/>
+    Centro <input type="radio" name="tipo" value="centro">
+    Usuario <input type="radio" name="tipo" vale="usuario">
     <input type="submit">
 </form>
 
 <?php
-require_once 'Tabla.php';
-$usuarios_tabla = new BaseDatos("centro", "id_centro", "*");
+require_once '../EstructuraPHP/Centro.php';
+require_once '../EstructuraPHP/Usuario.php';
+
+$usuarios_tabla = new Centro ("centro", "id_centro", "*");
+$usuarios_tabla = new Usuario ("usuario" , "id_usuario", "*");
 
 try {
 
-    $nif = filter_input(INPUT_POST, "nif", FILTER_SANITIZE_STRING);
+    $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_STRING);
     $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
 
-    if (!empty($nif) && !empty($password)) {
-        if (!empty($usuarios = $usuarios_tabla->getAll(["nif" => $nif, "password" => $password]))) {
-            session_start();
-            foreach ($usuarios as $usuario) {
-                $_SESSION["id"] = $usuario["id_centro"];
+    if(tipo==centro){
+        if (!empty($email) && !empty($password)) {
+            if (!empty($usuarios = $usuarios_tabla->getAll(["email" => $email, "password" => $password]))) {
+                session_start();
+                foreach ($usuarios as $usuario) {
+                    $_SESSION["id"] = $usuario["id_centro"];
+
+                    var_dump($centro);
+                }
+
+            } else {
+                throw new Exception("Email o contraseña incorrecto");
             }
-            header("Location: entrada.php");
-        } else {
-            throw new Exception("NIF o contraseña incorrecto");
+        }
+    }else{
+        if (!empty($email) && !empty($password)) {
+            if (!empty($usuarios = $usuarios_tabla->getAll(["email" => $email, "password" => $password]))) {
+                session_start();
+                foreach ($usuarios as $usuario) {
+                    $_SESSION["id"] = $usuario["id_usuario"];
+
+                    var_dump($usuario);
+                }
+            } else {
+                throw new Exception("Email o contraseña incorrecto");
+            }
         }
     }
+
 } catch (Exception $ex) {
 
     echo $ex->getMessage();

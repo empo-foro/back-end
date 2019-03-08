@@ -184,6 +184,7 @@ abstract class Tabla
      */
     protected function insert($valores)
     {
+
         try {
 
             $campos = join(",", array_keys($valores));

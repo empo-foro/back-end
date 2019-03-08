@@ -10,6 +10,7 @@ require_once 'Http.php';
 require_once 'Response.php';
 
 $controller = filter_input(INPUT_GET, "controller"); //Tabla con la que va a trabajar
+$operacion = filter_input(INPUT_GET, "operacion");
 $id = filter_input(INPUT_GET, "id");
 
 $verb = $_SERVER['REQUEST_METHOD'];
@@ -25,20 +26,55 @@ require $controller . ".php";
 $objeto = new $controller;
 
 if ($verb == "GET") {
-    if (empty($id)) {
-        $datos = $objeto->getAll();
-        $http->setHttpHeaders(200, new Response("Lista $controller",$datos));
-    } else {
-        $objeto->loadById($id);
-        $http->setHttpHeaders(200, new Response("Lista $controller",$objeto->serialize()));
+    if ($operacion == "login") {
+
+        $objeto->login($raw['email'], $raw["password"]);
+        $raw = file_get_contents("php://input");
+        $json = json_decode($raw);
+
+        $email = $json->email;
+        $password = $json->password;
+        $datos = $objeto->login($email, $password);
+        $http->setHttpHeaders(200, new Response("Datos", $datos));
+
+        if ($raw["tipo"] == $centro) {
+            if (!empty($email) && !empty($password)) {
+                if (!empty($usuarios = $usuarios_tabla->getAll(["email" => $email, "password" => $password]))) {
+                    session_start();
+                    foreach ($usuarios as $usuario) {
+                        $_SESSION["id"] = $usuario["id_centro"];
+
+                        var_dump($centro);
+                    }
+
+                } else {
+                    throw new Exception("Email o contraseña incorrecto");
+                }
+            }
+        } else if ($raw["tipo"] == $usuario) {
+            if (!empty($email) && !empty($password)) {
+                if (!empty($usuarios = $usuarios_tabla->getAll(["email" => $email, "password" => $password]))) {
+                    session_start();
+                    foreach ($usuarios as $usuario) {
+                        $_SESSION["id"] = $usuario["id_usuario"];
+
+                        var_dump($usuario);
+                    }
+                } else {
+                    throw new Exception("Email o contraseña incorrecto");
+                }
+            }
+        } else {
+            throw new Exception("No existe este usuario");
+        }
     }
 } else if ($verb == "POST") {
-    $raw=file_get_contents("php://input");
-    $datos=json_decode($raw);
-    foreach($datos as $c=>$v){
-        $objeto->$c=$v;
+    $raw = file_get_contents("php://input");
+    $datos = json_decode($raw);
+    foreach ($datos as $c => $v) {
+        $objeto->$c = $v;
     }
-
+    //var_dump($objeto);
     $objeto->updateOrInsert();
     $http->setHttpHeaders(200, new Response("Success"));
 
@@ -54,7 +90,7 @@ if ($verb == "GET") {
         $objeto->$c = $v;
     }
     $objeto->updateOrInsert();
-} else if($verb == "DELETE") {
+} else if ($verb == "DELETE") {
     if (empty($id)) {
         $http->setHttpHeaders(400, new Response("Bad request"));
         die();
