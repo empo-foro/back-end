@@ -164,15 +164,15 @@ class Usuario extends Tabla
 
     /**
      * Función que nos devuelve un registro si el usuario se ha encontrado dentro del la base de datos
-     * @param $nif
+     * @param $email
      * @param $password
      * @return string
      */
-    function logIn($nif, $password)
+    function logIn($email, $password)
     {
         try {
 
-            $resultado = self::$conn->query("select * from " . $this->table . " where nif " . " = " . $nif . "AND password = " . $password);
+            $resultado = self::$conn->query("select * from " . $this->table . " where email " . " = '" . $email . "' AND password = '" . $password . "'");
             return $resultado->fetch(PDO::FETCH_ASSOC);
 
         } catch (Exception $ex) {
@@ -264,6 +264,14 @@ class Usuario extends Tabla
         } else {
             throw new Exception("No existe ese registro para borrar");
         }
+    }
+
+    /**
+     * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
+     * @return array Devuelve un Array asociativo con los datos del objeto
+     */
+    function serialize() {
+        return $this->valores();
     }
 
 }

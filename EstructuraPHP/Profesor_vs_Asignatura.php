@@ -101,10 +101,18 @@ class Profesor_vs_Asignatura extends Tabla
         $Profesor_vs_Asignatura=$this->getById($id);
 
         if (!empty($Profesor_vs_Asignatura)){
+
             $this->id = $id;
-            $this->id_profesor = $Profesor_vs_Asignatura["profesor"];
-            $this->id_asignatura= $Profesor_vs_Asignatura['asignatura'];
-        }else{
+
+            $profesor = new Profesor();
+            $profesor->loadById($Profesor_vs_Asignatura['id_profesor']);
+            $this->profesor = $profesor;
+
+            $asignatura = new Asignatura();
+            $asignatura->loadById($Profesor_vs_Asignatura['id_asignatura']);
+            $this->asignatura = $asignatura;
+
+            }else{
             throw new Exception("No existe ese registro");
         }
     }
@@ -140,6 +148,14 @@ class Profesor_vs_Asignatura extends Tabla
         }else{
             throw new Exception("No hay registro para borrar");
         }
+    }
+
+    /**
+     * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
+     * @return array Devuelve un Array asociativo con los datos del objeto
+     */
+    function serialize() {
+        return $this->valores();
     }
 
 }

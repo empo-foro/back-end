@@ -16,6 +16,7 @@ class Respuesta extends Tabla
     private $post;
     private $usuario;
     private $respuesta_padre;
+    private $num_fields = 7;
 
     /**
      * Post constructor.
@@ -156,9 +157,13 @@ class Respuesta extends Tabla
             $usuario->loadById($this->usuario['id_usuario']);
             $this->usuario = $usuario;
 
-            $respuesta_padre = new Respuesta();
-            $respuesta_padre->loadById($this->respuesta_padre['id_respuesta_padre']);
-            $this->respuesta_padre = $respuesta_padre;
+            if(!empty($this->respuesta_padre['id_respuesta_padre'])) {
+                $respuesta_padre = new Respuesta();
+                $respuesta_padre->loadById($this->respuesta_padre['id_respuesta_padre']);
+                $this->respuesta_padre = $respuesta_padre;
+            } else {
+                $this->respuesta_padre = null;
+            }
 
         } else {
 

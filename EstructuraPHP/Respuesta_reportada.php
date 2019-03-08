@@ -14,6 +14,7 @@ class Respuesta_reportada extends Tabla
     private $descripcion;
     private $respuesta;
     private $usuario;
+    private $num_fields=5;
 
     /**
      * Post constructor.
