@@ -26,17 +26,31 @@ require $controller . ".php";
 $objeto = new $controller;
 
 if ($verb == "GET") {
-    if ($operacion == "login") {
+    if ($operacion == "logIn") {
 
-        $objeto->login($raw['email'], $raw["password"]);
+        /*$objeto->login($raw['email'], $raw["password"]);
         $raw = file_get_contents("php://input");
-        $json = json_decode($raw);
+        $json = json_decode($raw);*/
 
-        $email = $json->email;
-        $password = $json->password;
-        $datos = $objeto->login($email, $password);
-        $http->setHttpHeaders(200, new Response("Datos", $datos));
+        $email = filter_input(INPUT_GET, "email");
+        $password = filter_input(INPUT_GET, "password");
 
+        /*$email = $json->email;
+        $password = $json->password;*/
+
+        $datos = $objeto->logIn($email, $password);
+
+        if (!empty($datos)) {
+
+            $http->setHttpHeaders(200, new Response("Success",  "Datos de inicio de sesión correctos"));
+
+        } else {
+
+            $http->setHttpHeaders(400, new Response("Error", "Datos de inicio de sesión incorrectos"));
+
+        }
+
+/*
         if ($raw["tipo"] == $centro) {
             if (!empty($email) && !empty($password)) {
                 if (!empty($usuarios = $usuarios_tabla->getAll(["email" => $email, "password" => $password]))) {
@@ -67,7 +81,9 @@ if ($verb == "GET") {
         } else {
             throw new Exception("No existe este usuario");
         }
+    */
     }
+
 } else if ($verb == "POST") {
     $raw = file_get_contents("php://input");
     $datos = json_decode($raw);
