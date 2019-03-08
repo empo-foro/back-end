@@ -37,6 +37,11 @@ class Usuario extends Tabla
         return $this->id_usuario;
     }
 
+    public function setId_Usuario($id_usuario): void
+    {
+        $this->id_usuario = $id_usuario;
+    }
+
     public function getNif()
     {
         return $this->nif;
@@ -117,10 +122,10 @@ class Usuario extends Tabla
         $this->centro = $centro;
     }
 
-    public function setId_Centro($id): void
+    public function setId_Centro($id_centro): void
     {
-        $centro=new Centro();
-        $centro->loadById($id);
+        $centro = new Centro();
+        $centro->loadById($id_centro);
         $this->centro = $centro;
     }
 
