@@ -58,7 +58,14 @@ switch ($verb) {
                         /** Si los datos eran correctos devolveremos un token, en caso contrario devolveremos un error */
                         if (!empty($datos)) {
                             //Aquí tendríamos que devolver el token cuando este implementado
-                            $http->setHttpHeaders(200, new Response("Datos de inicio de sesión correctos", $datos['nombre']));
+
+                            $u = new $controller;
+                            $u->loadById($datos[0]['id_usuario']);
+                            $u->setId_Token(bin2hex(random_bytes(50)));
+                            $u->updateOrInsert();
+
+
+                            $http->setHttpHeaders(200, new Response("Datos de inicio de sesión correctos", $u->serialize()));
                         } else {
                             $http->setHttpHeaders(400, new Response("Datos de inicio de sesión incorrectos"));
                         }

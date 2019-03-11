@@ -21,18 +21,29 @@ class Usuario extends Tabla
     private $email;
     private $biografia;
     private $centro;
-    private $num_fields = 9;
+    private $id_token;
+    private $num_fields = 10;
 
     /**
      * Usuario constructor.
      */
     public function __construct()
     {
-            $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-            parent::__construct("Usuario", "id_usuario", $fields);
-        }
+        $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
+        parent::__construct("Usuario", "id_usuario", $fields);
+    }
 
     /* Getters y Setters */
+
+    public function getId_Token()
+    {
+        return $this->id_token;
+    }
+
+    public function setId_Token($id_token): void
+    {
+        $this->id_token = $id_token;
+    }
 
     public function getId_Usuario()
     {
@@ -172,16 +183,8 @@ class Usuario extends Tabla
      */
     function logIn($email, $password)
     {
-        try {
-
-            $resultado = self::$conn->query("select * from " . $this->table . " where email " . " = '" . $email . "' AND password = '" . $password . "'");
-            return $resultado->fetch(PDO::FETCH_ASSOC);
-
-        } catch (Exception $ex) {
-
-            return $ex->getMessage();
-
-        }
+        $user = $this->getAll(['email' => $email, 'password' => $password]);
+        return $user;
     }
 
     /**
@@ -202,6 +205,7 @@ class Usuario extends Tabla
             $this->tipo = $usuario["tipo"];
             $this->imagen_personal = $usuario["imagen_personal"];
             $this->email = $usuario["email"];
+            $this->id_token = $usuario["id_token"];
 
             $centro = new Centro();
             $centro->loadById($usuario['id_centro']);
@@ -245,6 +249,8 @@ class Usuario extends Tabla
         } else {
             $this->update($this->id_usuario, $usuario);
         }
+
+        return $this;
     }
 
     /**
@@ -272,7 +278,8 @@ class Usuario extends Tabla
      * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
      * @return array Devuelve un Array asociativo con los datos del objeto
      */
-    function serialize() {
+    function serialize()
+    {
         return $this->valores();
     }
 
