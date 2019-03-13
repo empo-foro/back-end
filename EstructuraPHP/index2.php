@@ -57,13 +57,10 @@ switch ($verb) {
 
                         /** Si los datos eran correctos devolveremos un token, en caso contrario devolveremos un error */
                         if (!empty($datos)) {
-                            //Aquí tendríamos que devolver el token cuando este implementado
-
                             $u = new $controller;
                             $u->loadById($datos[0]['id_usuario']);
                             $u->setId_Token(bin2hex(random_bytes(50)));
                             $u->updateOrInsert();
-
 
                             $http->setHttpHeaders(200, new Response("Datos de inicio de sesión correctos", $u->serialize()));
                         } else {
@@ -73,6 +70,31 @@ switch ($verb) {
                     } else {
 
                         $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logIn", $controller));
+
+                    }
+                    break;
+                case ("logOut"):
+
+                    if (get_class($objeto) == "Usuario" || get_class($objeto) == "Centro") {
+
+                        $id_token = filter_input(INPUT_GET, "id_token");
+
+                        if(!empty($id_token)){
+
+                            $datos = $objeto->logOut($id_token);
+
+                            $http->setHttpHeaders(200, new Response("Sesión finalizada", true));
+
+                        }else{
+
+                            $http->setHttpHeaders(200, new Response("Parámetro token no recibido", false));
+
+                        }
+
+
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
 
                     }
                     break;
@@ -98,9 +120,7 @@ switch ($verb) {
     case("POST"):
         if (!empty($operacion)) {
             switch ($operacion) {
-                case("registro-usuario"):
 
-                    break;
                 default:
                     $http->setHttpHeaders(400, new Response("La operación indicada no existe"));
             }

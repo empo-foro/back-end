@@ -269,6 +269,7 @@ class Usuario extends Tabla
             $this->imagen_personal = null;
             $this->email = null;
             $this->centro = null;
+            $this->id_token = null;
         } else {
             throw new Exception("No existe ese registro para borrar");
         }
@@ -281,6 +282,20 @@ class Usuario extends Tabla
     function serialize()
     {
         return $this->valores();
+    }
+
+    function logOut($id_token)
+    {
+
+    $user = $this->getAll(['id_token' => $id_token]);
+
+    $u = new Usuario();
+    $u->loadById($user[0]["id_usuario"]);
+    $u->id_token = null;
+    $u->updateOrInsert();
+
+
+
     }
 
 }

@@ -126,7 +126,6 @@ abstract class Tabla
 
             $campos = implode(",", $this->showFields);
         }
-
         $resultado = self::$conn->query("select " . $campos . " from " . $this->table . $where);
         return $resultado->fetchAll(PDO::FETCH_ASSOC);
 
