@@ -7,7 +7,6 @@
  */
 require_once 'Tabla.php';
 require_once 'Centro.php';
-require_once 'Alumno.php';
 require_once 'Profesor.php';
 
 class Usuario extends Tabla

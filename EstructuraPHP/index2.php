@@ -93,6 +93,67 @@ switch ($verb) {
             switch ($operacion) {
                 case("registro-usuario"):
 
+                    if(!empty($_FILES) && !empty($_POST['tipo'])) {
+
+                        if(realpath($_FILES["data"]["tmp_name"])) {
+
+                            require "Usuario.php";
+                            require $_POST["tipo"] . ".php";
+
+                            $array = file($_FILES["data"]["tmp_name"]);
+
+                            foreach ($array as $datos) {
+
+                                $dato = explode(";", $datos);
+                                $nif = $dato[0];
+                                $nombre = $dato[1];
+                                $password = $dato[2];
+                                $email = $dato[3];
+
+                                $u = new Usuario();
+                                $u->nif = $nif;
+                                $u->nombre = $nombre;
+                                $u->password = $password;
+                                $u->tipo = $_POST["tipo"];
+                                $u->email = $email;
+                                $u->id_centro = 1;
+
+                                if( !empty($_POST['id_curso']) && ($_POST['tipo'] == "Alumno") ) {
+
+                                    $u->updateOrInsert();
+
+                                    $type = new Alumno();
+
+                                    $type->id_usuario = $u->id_usuario;
+                                    $type->id_curso = $_POST["id_curso"];
+                                    var_dump($type);
+                                    $type->updateOrInsert();
+
+                                } elseif ( !empty($_POST['id_curso']) && $_POST['tipo'] == "Profesor" ) {
+
+                                    $u->updateOrInsert();
+
+                                    $type = new Profesor();
+
+                                    $type->id_usuario = $u->id_usuario;
+
+                                } else {
+
+                                    $http->setHttpHeaders(200, new Response("El tipo de usuario es incorrecto"));
+
+                                }
+
+                            }
+
+
+                        } else {
+                            $http->setHttpHeaders(200, new Response("Error"));
+                        }
+
+                    } else {
+                        $http->setHttpHeaders(200, new Response("No se ha recibido los datos necesarios para un registro"));
+                    }
+
                     break;
                 default:
                     $http->setHttpHeaders(400, new Response("La operación indicada no existe"));
