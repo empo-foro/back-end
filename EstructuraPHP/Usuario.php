@@ -205,7 +205,6 @@ class Usuario extends Tabla
             $this->tipo = $usuario["tipo"];
             $this->imagen_personal = $usuario["imagen_personal"];
             $this->email = $usuario["email"];
-            $this->id_token = $usuario["id_token"];
 
             $centro = new Centro();
             $centro->loadById($usuario['id_centro']);

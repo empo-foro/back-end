@@ -44,53 +44,24 @@ switch ($verb) {
         /** Si el parámetro $operacion ha recibido un valor cargaremos la operación con su case correspondiente */
         if (!empty($operacion)) {
             switch ($operacion) {
-                case ("logIn"):
 
-                    if (get_class($objeto) == "Usuario" || get_class($objeto) == "Centro") {
-
-                        /** @var String $email Parámetro que recibiremos a través de la petición */
-                        $email = filter_input(INPUT_GET, "email");
-                        /** @var String $password Parámetro que recibiremos a través de la petición */
-                        $password = filter_input(INPUT_GET, "password");
-                        /** @var Object $datos Utilizaremos al función logIn */
-                        $datos = $objeto->logIn($email, $password);
-
-                        /** Si los datos eran correctos devolveremos un token, en caso contrario devolveremos un error */
-                        if (!empty($datos)) {
-                            $u = new $controller;
-                            $u->loadById($datos[0]['id_usuario']);
-                            $u->setId_Token(bin2hex(random_bytes(50)));
-                            $u->updateOrInsert();
-
-                            $http->setHttpHeaders(200, new Response("Datos de inicio de sesión correctos", $u->serialize()));
-                        } else {
-                            $http->setHttpHeaders(400, new Response("Datos de inicio de sesión incorrectos"));
-                        }
-
-                    } else {
-
-                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logIn", $controller));
-
-                    }
-                    break;
                 case ("logOut"):
 
                     if (get_class($objeto) == "Usuario" || get_class($objeto) == "Centro") {
 
                         $id_token = filter_input(INPUT_GET, "id_token");
 
-                        if(!empty($id_token)){
+                        if (!empty($id_token)) {
 
                             $datos = $objeto->logOut($id_token);
 
                             $http->setHttpHeaders(200, new Response("Sesión finalizada", true));
 
-                        }else{
+                        } else {
 
                             $http->setHttpHeaders(200, new Response("Parámetro token no recibido", false));
 
                         }
-
 
                     } else {
 
@@ -98,6 +69,7 @@ switch ($verb) {
 
                     }
                     break;
+
                 default:
                     $http->setHttpHeaders(400, new Response("La operación indicada no existe"));
             }
@@ -120,6 +92,39 @@ switch ($verb) {
     case("POST"):
         if (!empty($operacion)) {
             switch ($operacion) {
+
+                case ("logIn"):
+
+                    if (get_class($objeto) == "Usuario" || get_class($objeto) == "Centro") {
+
+                        $datos = file_get_contents("php://input");
+                        $raw = json_decode($datos);
+
+                      /*¿Cuando envia información por raw o por form-data?
+                       *
+                       * $email = filter_input(INPUT_POST, "email");
+                        $password = filter_input(INPUT_POST, "password");*/
+
+                        $datos = $objeto->logIn($raw->email, $raw->password);
+
+                        /** Si los datos eran correctos devolveremos un token, en caso contrario devolveremos un error */
+                        if (!empty($datos)){
+                            $u = new $controller;
+                            $u->loadById($datos[0]['id_usuario']);
+                            $u->setId_Token(bin2hex(random_bytes(50)));
+                            $u->updateOrInsert();
+
+                            $http->setHttpHeaders(200, new Response("Datos de inicio de sesión correctos", $u->serialize()));
+                        } else {
+                            $http->setHttpHeaders(400, new Response("Datos de inicio de sesión incorrectos"));
+                        }
+
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logIn", $controller));
+
+                    }
+                    break;
 
                 default:
                     $http->setHttpHeaders(400, new Response("La operación indicada no existe"));
