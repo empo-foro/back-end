@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 07-03-2019 a las 11:49:19
+-- Tiempo de generación: 14-03-2019 a las 11:45:35
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.10
 
@@ -77,17 +77,18 @@ CREATE TABLE `centro` (
   `biografia` text,
   `descripcion` text,
   `imagen_personal` varchar(255) DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL
+  `email` varchar(50) DEFAULT NULL,
+  `id_token` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `centro`
 --
 
-INSERT INTO `centro` (`id_centro`, `nif`, `nombre`, `password`, `biografia`, `descripcion`, `imagen_personal`, `email`) VALUES
-(1, '49900414M', 'Pedritos', 'stucom', NULL, NULL, NULL, NULL),
-(2, '111', 'hola', '1234', NULL, NULL, NULL, NULL),
-(3, '12345678M', 'Prueba POST', '1234', NULL, NULL, NULL, NULL);
+INSERT INTO `centro` (`id_centro`, `nif`, `nombre`, `password`, `biografia`, `descripcion`, `imagen_personal`, `email`, `id_token`) VALUES
+(1, '49900414M', 'Pedritos', 'stucom', NULL, NULL, NULL, 'pedritos@empo.com', NULL),
+(2, '111', 'hola', '1234', NULL, NULL, NULL, 'hola@empo.com', NULL),
+(3, '12345678M', 'Prueba POST', '1234', NULL, NULL, NULL, 'pruebaPost@empo.com', NULL);
 
 -- --------------------------------------------------------
 
@@ -235,15 +236,16 @@ CREATE TABLE `usuario` (
   `imagen_personal` varchar(255) DEFAULT NULL,
   `email` varchar(50) NOT NULL,
   `biografia` text,
-  `id_centro` int(11) NOT NULL
+  `id_centro` int(11) NOT NULL,
+  `id_token` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id_usuario`, `nif`, `nombre`, `password`, `tipo`, `imagen_personal`, `email`, `biografia`, `id_centro`) VALUES
-(1, '49900414M', 'esteban', 'esteban', '', NULL, 'ESTEBAN@GMAIL.COM', 'YEEP', 1);
+INSERT INTO `usuario` (`id_usuario`, `nif`, `nombre`, `password`, `tipo`, `imagen_personal`, `email`, `biografia`, `id_centro`, `id_token`) VALUES
+(1, '49900414M', 'esteban', 'esteban', '', NULL, 'ESTEBAN@GMAIL.COM', 'YEEP', 1, NULL);
 
 --
 -- Índices para tablas volcadas

@@ -126,7 +126,6 @@ abstract class Tabla
 
             $campos = implode(",", $this->showFields);
         }
-
         $resultado = self::$conn->query("select " . $campos . " from " . $this->table . $where);
         return $resultado->fetchAll(PDO::FETCH_ASSOC);
 
@@ -171,7 +170,6 @@ abstract class Tabla
      */
     protected function getById($id)
     {
-
         $resultado = self::$conn->query("select * from " . $this->table . " where " . $this->idField . " = " . $id);
         return $resultado->fetch(PDO::FETCH_ASSOC);
 
