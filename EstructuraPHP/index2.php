@@ -93,9 +93,9 @@ switch ($verb) {
             switch ($operacion) {
                 case("registro-usuario"):
 
-                    if(!empty($_FILES) && !empty($_POST['tipo'])) {
+                    if (!empty($_FILES) && !empty($_POST['tipo'])) {
 
-                        if(realpath($_FILES["data"]["tmp_name"])) {
+                        if (realpath($_FILES["data"]["tmp_name"])) {
 
                             require "Usuario.php";
                             require $_POST["tipo"] . ".php";
@@ -118,16 +118,15 @@ switch ($verb) {
                                 $u->email = $email;
                                 $u->id_centro = 1;
 
-                                if( !empty($_POST['id_curso']) && ($_POST['tipo'] == "Alumno") ) {
+                                if (!empty($_POST['id_curso']) && ($_POST['tipo'] == "Alumno")) {
 
                                     $u->updateOrInsert();
                                     $type = new Alumno();
                                     $type->id_usuario = $u->id_usuario;
                                     $type->id_curso = $_POST["id_curso"];
-                                    var_dump($type);
                                     $type->updateOrInsert();
 
-                                } elseif ( !empty($_POST['id_curso']) && $_POST['tipo'] == "Profesor" ) {
+                                } elseif (!empty($_POST['id_curso']) && $_POST['tipo'] == "Profesor") {
 
                                     $u->updateOrInsert();
                                     $type = new Profesor();
@@ -152,18 +151,28 @@ switch ($verb) {
                         $datos = file_get_contents("php://input");
                         $raw = json_decode($datos);
 
-                      /*¿Cuando envia información por raw o por form-data?
-                       *
-                       * $email = filter_input(INPUT_POST, "email");
-                        $password = filter_input(INPUT_POST, "password");*/
+                        /*¿Cuando envia información por raw o por form-data?
+                         *
+                         * $email = filter_input(INPUT_POST, "email");
+                          $password = filter_input(INPUT_POST, "password");*/
 
                         $datos = $objeto->logIn($raw->email, $raw->password);
 
                         /** Si los datos eran correctos devolveremos un token, en caso contrario devolveremos un error */
-                        if (!empty($datos)){
+                        if (!empty($datos)) {
 
                             $u = new $controller;
-                            $u->loadById($datos[0]['id_usuario']);
+
+                            if (get_class($objeto) == "Usuario") {
+
+                                $u->loadById($datos[0]['id_usuario']);
+
+                            } elseif (get_class($objeto) == "Centro") {
+
+                                $u->loadById($datos['id_centro']);
+
+                            }
+
                             $u->setId_Token(bin2hex(random_bytes(50)));
                             $u->updateOrInsert();
 
@@ -187,7 +196,7 @@ switch ($verb) {
 
                         $datos = $objeto->checkToken($raw->id_token);
 
-                        if(!empty($datos)){
+                        if (!empty($datos)) {
 
                             $http->setHttpHeaders(200, new Response("Token correcto", true));
 
@@ -201,7 +210,7 @@ switch ($verb) {
                     }
                     break;
 
-                    default:
+                default:
                     $http->setHttpHeaders(400, new Response("La operación indicada no existe"));
             }
 
