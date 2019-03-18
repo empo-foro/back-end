@@ -178,7 +178,30 @@ switch ($verb) {
 
                     break;
 
-                default:
+                case ("checkToken"):
+
+                    if (get_class($objeto) == "Usuario" || get_class($objeto) == "Centro") {
+
+                        $datos = file_get_contents("php://input");
+                        $raw = json_decode($datos);
+
+                        $datos = $objeto->checkToken($raw->id_token);
+
+                        if(!empty($datos)){
+
+                            $http->setHttpHeaders(200, new Response("Token correcto", true));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("Token incorrecto", false));
+                        }
+
+                    } else {
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación checkToken", $controller));
+                    }
+                    break;
+
+                    default:
                     $http->setHttpHeaders(400, new Response("La operación indicada no existe"));
             }
 
