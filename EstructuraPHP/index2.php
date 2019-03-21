@@ -95,12 +95,12 @@ switch ($verb) {
 
                     if(!empty($_FILES) && !empty($_POST['tipo'])) {
 
-                        if(realpath($_FILES["data"]["tmp_name"])) {
+                        if(realpath($_FILES["fichero"]["tmp_name"])) {
 
                             require "Usuario.php";
                             require $_POST["tipo"] . ".php";
 
-                            $array = file($_FILES["data"]["tmp_name"]);
+                            $array = file($_FILES["fichero"]["tmp_name"]);
 
                             foreach ($array as $datos) {
 
