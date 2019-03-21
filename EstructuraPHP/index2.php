@@ -97,8 +97,8 @@ switch ($verb) {
 
                         if(realpath($_FILES["fichero"]["tmp_name"])) {
 
-                            require "Usuario.php";
-                            require $_POST["tipo"] . ".php";
+                            require_once "Usuario.php";
+                            require_once $_POST["tipo"] . ".php";
 
                             $array = file($_FILES["fichero"]["tmp_name"]);
 
