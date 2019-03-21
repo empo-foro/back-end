@@ -152,18 +152,28 @@ switch ($verb) {
                         $datos = file_get_contents("php://input");
                         $raw = json_decode($datos);
 
-                      /*¿Cuando envia información por raw o por form-data?
-                       *
-                       * $email = filter_input(INPUT_POST, "email");
-                        $password = filter_input(INPUT_POST, "password");*/
+                        /*¿Cuando envia información por raw o por form-data?
+                         *
+                         * $email = filter_input(INPUT_POST, "email");
+                          $password = filter_input(INPUT_POST, "password");*/
 
                         $datos = $objeto->logIn($raw->email, $raw->password);
 
                         /** Si los datos eran correctos devolveremos un token, en caso contrario devolveremos un error */
-                        if (!empty($datos)){
+                        if (!empty($datos)) {
 
                             $u = new $controller;
-                            $u->loadById($datos[0]['id_usuario']);
+
+                            if (get_class($objeto) == "Usuario") {
+
+                                $u->loadById($datos[0]['id_usuario']);
+
+                            } elseif (get_class($objeto) == "Centro") {
+
+                                $u->loadById($datos['id_centro']);
+
+                            }
+
                             $u->setId_Token(bin2hex(random_bytes(50)));
                             $u->updateOrInsert();
 
@@ -176,6 +186,29 @@ switch ($verb) {
                         $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logIn", $controller));
                     }
 
+                    break;
+
+                case ("checkToken"):
+
+                    if (get_class($objeto) == "Usuario" || get_class($objeto) == "Centro") {
+
+                        $datos = file_get_contents("php://input");
+                        $raw = json_decode($datos);
+
+                        $datos = $objeto->checkToken($raw->id_token);
+
+                        if (!empty($datos)) {
+
+                            $http->setHttpHeaders(200, new Response("Token correcto", true));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("Token incorrecto", false));
+                        }
+
+                    } else {
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación checkToken", $controller));
+                    }
                     break;
 
                 default:

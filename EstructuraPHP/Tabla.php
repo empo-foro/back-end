@@ -170,6 +170,7 @@ abstract class Tabla
      */
     protected function getById($id)
     {
+
         $resultado = self::$conn->query("select * from " . $this->table . " where " . $this->idField . " = " . $id);
         return $resultado->fetch(PDO::FETCH_ASSOC);
 

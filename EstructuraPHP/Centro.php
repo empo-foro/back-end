@@ -18,7 +18,8 @@ class Centro extends Tabla
     private $descripcion;
     private $imagen_personal;
     private $email;
-    private $num_fields = 8;
+    private $id_token;
+    private $num_fields = 9;
 
     public function __construct()
     {
@@ -28,6 +29,15 @@ class Centro extends Tabla
 
 
     /* Setters y Getters */
+    public function getId_Token()
+    {
+        return $this->id_token;
+    }
+
+    public function setId_Token($id_token): void
+    {
+        $this->id_token = $id_token;
+    }
 
     public function getId_Centro()
     {
@@ -226,7 +236,8 @@ class Centro extends Tabla
      * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
      * @return array Devuelve un Array asociativo con los datos del objeto
      */
-    function serialize() {
+    function serialize()
+    {
         return $this->valores();
     }
 

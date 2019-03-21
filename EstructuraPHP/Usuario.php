@@ -285,14 +285,19 @@ class Usuario extends Tabla
     function logOut($id_token)
     {
 
-    $user = $this->getAll(['id_token' => $id_token]);
+        $user = $this->getAll(['id_token' => $id_token]);
 
-    $u = new Usuario();
-    $u->loadById($user[0]["id_usuario"]);
-    $u->id_token = null;
-    $u->updateOrInsert();
+        $u = new Usuario();
+        $u->loadById($user[0]["id_usuario"]);
+        $u->id_token = null;
+        $u->updateOrInsert();
 
+    }
 
+    function checkToken($id_token)
+    {
+        $user = $this->getAll(['id_token' => $id_token]);
+        return $user;
 
     }
 
