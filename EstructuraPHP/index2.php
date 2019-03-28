@@ -34,7 +34,7 @@ if (empty($controller) || !file_exists($controller . ".php")) {
 }
 
 /** Añadimos la clase y creamos un objeto de la misma */
-require $controller . ".php";
+require_once $controller . ".php";
 $objeto = new $controller;
 
 /** Utilizaremos un switch para cargar las funciones de los diferentes métodos que recibiremos */
@@ -91,7 +91,7 @@ switch ($verb) {
     case("POST"):
         if (!empty($operacion)) {
             switch ($operacion) {
-                case("registro-usuario"):
+                case("registro-usuarios"):
 
                     if (!empty($_FILES) && !empty($_POST['tipo'])) {
 
@@ -161,22 +161,22 @@ switch ($verb) {
                         /** Si los datos eran correctos devolveremos un token, en caso contrario devolveremos un error */
                         if (!empty($datos)) {
 
-                            $u = new $controller;
+                            $objeto = new $controller;
 
                             if (get_class($objeto) == "Usuario") {
 
-                                $u->loadById($datos[0]['id_usuario']);
+                                $objeto->loadById($datos[0]['id_usuario']);
 
                             } elseif (get_class($objeto) == "Centro") {
 
-                                $u->loadById($datos['id_centro']);
+                                $objeto->loadById($datos['id_centro']);
 
                             }
 
-                            $u->setId_Token(bin2hex(random_bytes(50)));
-                            $u->updateOrInsert();
+                            $objeto->setId_Token(bin2hex(random_bytes(50)));
+                            $objeto->updateOrInsert();
 
-                            $http->setHttpHeaders(200, new Response("Datos de inicio de sesión correctos", $u->serialize()));
+                            $http->setHttpHeaders(200, new Response("Datos de inicio de sesión correctos", $objeto->serialize()));
 
                         } else {
                             $http->setHttpHeaders(400, new Response("Datos de inicio de sesión incorrectos"));
@@ -208,6 +208,41 @@ switch ($verb) {
                     } else {
                         $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación checkToken", $controller));
                     }
+                    break;
+                case ("registroUsuario"):
+
+                    if (get_class($objeto) == "Usuario") {
+
+                        $datos = file_get_contents("php://input");
+                        $raw = json_decode($datos);
+
+                        $datos = $objeto->registroUsuario($raw->id_centro);
+
+                        if (!empty($datos)) {
+
+                            if(!empty($objeto->id_curso)){
+
+                                $u = new Usuario();
+                                $u->nif = $nif;
+                                $u->nombre = $nombre;
+                                $u->password = $password;
+                                $u->email = $email;
+                                $u->id_centro = 1;
+
+                            } else {
+                                $http->setHttpHeaders(400, new Response("Se necesita un id de curso", false));
+                            }
+
+                            $http->setHttpHeaders(200, new Response("Registro correcto", true));
+
+                        } else {
+                            $http->setHttpHeaders(400, new Response("Registro incorrecto", false));
+                        }
+
+                    } else {
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación registroUsuario", $controller));
+                    }
+
                     break;
 
                 default:
