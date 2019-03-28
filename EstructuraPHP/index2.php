@@ -93,14 +93,14 @@ switch ($verb) {
             switch ($operacion) {
                 case("registro-usuarios"):
 
-                    if (!empty($_FILES) && !empty($_POST['tipo'])) {
+                    if(!empty($_FILES) && !empty($_POST['tipo'])) {
 
-                        if (realpath($_FILES["data"]["tmp_name"])) {
+                        if(realpath($_FILES["fichero"]["tmp_name"])) {
 
-                            require "Usuario.php";
-                            require $_POST["tipo"] . ".php";
+                            require_once "Usuario.php";
+                            require_once $_POST["tipo"] . ".php";
 
-                            $array = file($_FILES["data"]["tmp_name"]);
+                            $array = file($_FILES["fichero"]["tmp_name"]);
 
                             foreach ($array as $datos) {
 
@@ -118,15 +118,16 @@ switch ($verb) {
                                 $u->email = $email;
                                 $u->id_centro = 1;
 
-                                if (!empty($_POST['id_curso']) && ($_POST['tipo'] == "Alumno")) {
+                                if( !empty($_POST['id_curso']) && ($_POST['tipo'] == "Alumno") ) {
 
                                     $u->updateOrInsert();
                                     $type = new Alumno();
                                     $type->id_usuario = $u->id_usuario;
                                     $type->id_curso = $_POST["id_curso"];
+                                    var_dump($type);
                                     $type->updateOrInsert();
 
-                                } elseif (!empty($_POST['id_curso']) && $_POST['tipo'] == "Profesor") {
+                                } elseif ( !empty($_POST['id_curso']) && $_POST['tipo'] == "Profesor" ) {
 
                                     $u->updateOrInsert();
                                     $type = new Profesor();
