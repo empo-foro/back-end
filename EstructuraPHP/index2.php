@@ -257,6 +257,7 @@ switch ($verb) {
             if (!empty($raw)) {
 
                 $datos = json_decode($raw);
+                var_dump($raw);
                 foreach ($datos as $campo => $valor) {
                     $objeto->$campo = $valor;
                 }
