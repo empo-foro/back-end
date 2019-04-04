@@ -301,4 +301,19 @@ class Usuario extends Tabla
 
     }
 
+    function getAsignaturas($id_token){
+
+        $resultado = self::$conn->query("select asignatura.* from asignatura inner join alumno on asignatura.id_curso = alumno.id_curso
+                INNER JOIN usuario on alumno.id_usuario = usuario.id_usuario
+                where usuario.id_token = '" . $id_token . "'");
+        return $resultado->fetch(PDO::FETCH_ASSOC);
+
+    }
+
+    /*function registroUsuario($id_usuario)
+    {
+        $user = $this->getAll(['id_usuario' => $id_usuario]);
+        return $user;
+    }*/
+
 }

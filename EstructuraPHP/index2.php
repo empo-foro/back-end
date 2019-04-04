@@ -210,25 +210,38 @@ switch ($verb) {
                         $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación checkToken", $controller));
                     }
                     break;
-                case ("registroUsuario"):
+
+                /*case ("registroUsuario"):
 
                     if (get_class($objeto) == "Usuario") {
 
                         $datos = file_get_contents("php://input");
                         $raw = json_decode($datos);
 
-                        $datos = $objeto->registroUsuario($raw->id_centro);
+
+                        if(is_array($datos) || is_object($datos))
+                        {
+                            $usuario = $raw[0];
+                            $datosTipo = $raw[1];
+
+                            foreach ($usuario as $campo => $valor)
+                            {
+                                $objeto->$campo = $valor;
+                            }
+
+                        }
+                        $datos = $objeto->registroUsuario($raw="id_centro");
 
                         if (!empty($datos)) {
 
-                            if(!empty($objeto->id_curso)){
+                            if(!empty($objeto->id_usuario)){
 
-                                $u = new Usuario();
-                                $u->nif = $nif;
-                                $u->nombre = $nombre;
-                                $u->password = $password;
-                                $u->email = $email;
-                                $u->id_centro = 1;
+                                $objeto = new Usuario();
+                                $objeto->nif = $nif;
+                                $objeto->nombre = $nombre;
+                                $objeto->password = $password;
+                                $objeto->email = $email;
+                                $objeto->id_usuario = 1;
 
                             } else {
                                 $http->setHttpHeaders(400, new Response("Se necesita un id de curso", false));
@@ -244,6 +257,32 @@ switch ($verb) {
                         $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación registroUsuario", $controller));
                     }
 
+                    break;*/
+
+                case ("getAsignaturas"):
+
+                    if (get_class($objeto) == "Usuario") {
+
+                        $datos = file_get_contents("php://input");
+                        $raw = json_decode($datos);
+
+                        $datos = $objeto->getAsignaturas($raw->id_token);
+
+                        if(!empty($datos)){
+
+                            $http->setHttpHeaders(200, new Response("Listado de asignaturas", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("Bad request", false));
+
+                        }
+
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación registroUsuario", $controller));
+
+                    }
                     break;
 
                 default:
