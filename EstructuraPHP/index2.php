@@ -50,12 +50,12 @@ switch ($verb) {
                     if (get_class($objeto) == "Usuario")
                     {
                         
-                        $$tipo=filter_input(INPUT_GET, "tipo");
+                        $tipo=filter_input(INPUT_GET, "tipo");
 
                         if(!empty($tipo))
                         {
 
-                            $tipo = $objeto->listarUsuarios($tipo);
+                            $datos = $objeto->listarUsuarios($tipo);
 
                             $http->setHttpHeaders(200, new Response("Listado de alumnos", $datos));
 
