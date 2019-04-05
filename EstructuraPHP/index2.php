@@ -238,7 +238,7 @@ switch ($verb) {
                     }
                     break;
 
-                /*case ("registroUsuario"):
+                case ("registroUsuario"):
 
                     if (get_class($objeto) == "Usuario") {
 
@@ -284,7 +284,7 @@ switch ($verb) {
                         $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación registroUsuario", $controller));
                     }
 
-                    break;*/
+                    break;
 
                 case ("getAsignaturas"):
 
@@ -301,7 +301,7 @@ switch ($verb) {
 
                         } else {
 
-                            $http->setHttpHeaders(400, new Response("Bad request", false));
+                            $http->setHttpHeaders(400, new Response("Este usuario no tiene asignaturas", false));
 
                         }
 

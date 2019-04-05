@@ -306,7 +306,7 @@ class Usuario extends Tabla
         $resultado = self::$conn->query("select asignatura.* from asignatura inner join alumno on asignatura.id_curso = alumno.id_curso
                 INNER JOIN usuario on alumno.id_usuario = usuario.id_usuario
                 where usuario.id_token = '" . $id_token . "'");
-        return $resultado->fetch(PDO::FETCH_ASSOC);
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
 
     }
 
