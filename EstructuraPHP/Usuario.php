@@ -310,6 +310,13 @@ class Usuario extends Tabla
 
     }
 
+    function listarUsuarios($tipo){
+
+        $user = $this->getAll(['tipo' => $tipo]);
+        return $user;
+
+    }
+
     /*function registroUsuario($id_usuario)
     {
         $user = $this->getAll(['id_usuario' => $id_usuario]);

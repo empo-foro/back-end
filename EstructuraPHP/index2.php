@@ -45,6 +45,33 @@ switch ($verb) {
         if (!empty($operacion)) {
             switch ($operacion) {
 
+                case ("listarUsuarios"):
+
+                    if (get_class($objeto) == "Usuario")
+                    {
+                        
+                        $$tipo=filter_input(INPUT_GET, "tipo");
+
+                        if(!empty($tipo))
+                        {
+
+                            $tipo = $objeto->listarUsuarios($tipo);
+
+                            $http->setHttpHeaders(200, new Response("Listado de alumnos", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay datos disponibles", false));
+
+                        }
+                        
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+                    break;
+
                 case ("logOut"):
 
                     if (get_class($objeto) == "Usuario" || get_class($objeto) == "Centro") {
@@ -59,7 +86,7 @@ switch ($verb) {
 
                         } else {
 
-                            $http->setHttpHeaders(200, new Response("Parámetro token no recibido", false));
+                            $http->setHttpHeaders(400, new Response("Parámetro token no recibido", false));
 
                         }
 
@@ -138,10 +165,10 @@ switch ($verb) {
                                 }
                             }
                         } else {
-                            $http->setHttpHeaders(200, new Response("Error"));
+                            $http->setHttpHeaders(400, new Response("Error"));
                         }
                     } else {
-                        $http->setHttpHeaders(200, new Response("No se ha recibido los datos necesarios para un registro"));
+                        $http->setHttpHeaders(400, new Response("No se ha recibido los datos necesarios para un registro"));
                     }
 
                     break;
