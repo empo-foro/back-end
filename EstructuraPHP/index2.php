@@ -57,7 +57,7 @@ switch ($verb) {
 
                             $datos = $objeto->listarUsuarios($tipo);
 
-                            $http->setHttpHeaders(200, new Response("Listado de alumnos", $datos));
+                            $http->setHttpHeaders(200, new Response("Listado de usuarios", $datos));
 
                         } else {
 
