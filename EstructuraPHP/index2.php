@@ -47,13 +47,11 @@ switch ($verb) {
 
                 case ("listarUsuarios"):
 
-                    if (get_class($objeto) == "Usuario")
-                    {
-                        
-                        $tipo=filter_input(INPUT_GET, "tipo");
+                    if (get_class($objeto) == "Usuario") {
 
-                        if(!empty($tipo))
-                        {
+                        $tipo = filter_input(INPUT_GET, "tipo");
+
+                        if (!empty($tipo)) {
 
                             $datos = $objeto->listarUsuarios($tipo);
 
@@ -64,12 +62,37 @@ switch ($verb) {
                             $http->setHttpHeaders(400, new Response("No hay datos disponibles", false));
 
                         }
-                        
+
                     } else {
 
                         $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
 
                     }
+                    break;
+
+                case ("asignaturaPost"):
+
+                    if (get_class($objeto) == "Post") {
+
+                        $id_post= filter_input(INPUT_GET,"id");
+                        if (!empty($id_post)){
+
+                            $datos = $objeto->asignaturaPost($id_post);
+
+                            $http->setHttpHeaders(200, new Response("Listado de post", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay post disponibles", false));
+
+                        }
+
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
                     break;
 
                 case ("logOut"):
@@ -120,9 +143,9 @@ switch ($verb) {
             switch ($operacion) {
                 case("registro-usuarios"):
 
-                    if(!empty($_FILES) && !empty($_POST['tipo'])) {
+                    if (!empty($_FILES) && !empty($_POST['tipo'])) {
 
-                        if(realpath($_FILES["fichero"]["tmp_name"])) {
+                        if (realpath($_FILES["fichero"]["tmp_name"])) {
 
                             require_once "Usuario.php";
                             require_once $_POST["tipo"] . ".php";
@@ -145,7 +168,7 @@ switch ($verb) {
                                 $u->email = $email;
                                 $u->id_centro = 1;
 
-                                if( !empty($_POST['id_curso']) && ($_POST['tipo'] == "Alumno") ) {
+                                if (!empty($_POST['id_curso']) && ($_POST['tipo'] == "Alumno")) {
 
                                     $u->updateOrInsert();
                                     $type = new Alumno();
@@ -154,7 +177,7 @@ switch ($verb) {
                                     var_dump($type);
                                     $type->updateOrInsert();
 
-                                } elseif ( !empty($_POST['id_curso']) && $_POST['tipo'] == "Profesor" ) {
+                                } elseif (!empty($_POST['id_curso']) && $_POST['tipo'] == "Profesor") {
 
                                     $u->updateOrInsert();
                                     $type = new Profesor();
@@ -238,30 +261,25 @@ switch ($verb) {
                     }
                     break;
 
-                case ("registroUsuario"):
+               /* case ("registroUsuario"):
 
                     if (get_class($objeto) == "Usuario") {
 
                         $datos = file_get_contents("php://input");
                         $raw = json_decode($datos);
 
+                        $usuario = $raw[0];
+                        $datosTipo = $raw[1];
 
-                        if(is_array($datos) || is_object($datos))
-                        {
-                            $usuario = $raw[0];
-                            $datosTipo = $raw[1];
-
-                            foreach ($usuario as $campo => $valor)
-                            {
-                                $objeto->$campo = $valor;
-                            }
-
+                        foreach ($usuario as $campo => $valor) {
+                            $objeto->$campo = $valor;
                         }
-                        $datos = $objeto->registroUsuario($raw="id_centro");
+
+                        $datos = $objeto->registroUsuario($raw = "id_centro");
 
                         if (!empty($datos)) {
 
-                            if(!empty($objeto->id_usuario)){
+                            if (!empty($objeto->id_usuario)) {
 
                                 $objeto = new Usuario();
                                 $objeto->nif = $nif;
@@ -284,7 +302,7 @@ switch ($verb) {
                         $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación registroUsuario", $controller));
                     }
 
-                    break;
+                    break; */
 
                 case ("getAsignaturas"):
 
@@ -295,7 +313,7 @@ switch ($verb) {
 
                         $datos = $objeto->getAsignaturas($raw->id_token);
 
-                        if(!empty($datos)){
+                        if (!empty($datos)) {
 
                             $http->setHttpHeaders(200, new Response("Listado de asignaturas", $datos));
 

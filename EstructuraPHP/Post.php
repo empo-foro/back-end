@@ -15,7 +15,8 @@ class Post extends Tabla
     private $fecha;
     private $cerrado;
     private $alumno;
-    private $num_fields = 6;
+    private $id_asignatura;
+    private $num_fields = 7;
 
     /**
      * Post constructor.
@@ -28,6 +29,14 @@ class Post extends Tabla
     }
 
     /* Getters y Setters */
+
+    public function getId_Asignatura(){
+        return $this->id_asignatura;
+    }
+
+    public function setId_Asignatura($id_asignatura):void {
+        $this->id_asignatura=$id_asignatura;
+    }
 
     public function getId_Post()
     {
@@ -138,6 +147,7 @@ class Post extends Tabla
             $this->cuerpo = $post['cuerpo'];
             $this->fecha = $post['fecha'];
             $this->cerrado = $post['cerrado'];
+            $this->id_asignatura = $post["id_asignatura"];
 
             $alumno = new Alumno();
             $alumno->loadById($post['id_alumno']);
@@ -195,8 +205,17 @@ class Post extends Tabla
             $this->fecha = null;
             $this->cerrado = null;
             $this->alumno = null;
+            $this->id_asignatura = null;
         } else {
             throw new Exception("El post que quieres borrar no existe");
         }
+    }
+
+
+    function asignaturaPost($id){
+
+        $resultado = self::$conn->query("select * from post where id_asignatura = '" . $id ."'");
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
+
     }
 }
