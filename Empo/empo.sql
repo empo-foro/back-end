@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 14-03-2019 a las 11:45:35
+-- Tiempo de generación: 08-04-2019 a las 13:11:32
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.10
 
@@ -58,6 +58,7 @@ CREATE TABLE `asignatura` (
 --
 
 INSERT INTO `asignatura` (`id_asignatura`, `nombre`, `id_curso`) VALUES
+(1, 'aaa', 4),
 (2, 'Desarrollo de interfaces web', 3),
 (9, 'M03 Programación', 5),
 (10, 'M03 Programación', 5),
@@ -123,8 +124,16 @@ CREATE TABLE `post` (
   `cuerpo` text NOT NULL,
   `fecha` date NOT NULL,
   `cerrado` tinyint(1) NOT NULL,
-  `id_alumno` int(11) NOT NULL
+  `id_alumno` int(11) NOT NULL,
+  `id_asignatura` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `post`
+--
+
+INSERT INTO `post` (`id_post`, `titulo`, `cuerpo`, `fecha`, `cerrado`, `id_alumno`, `id_asignatura`) VALUES
+(4, 'Orientación a objetos', 'Me gustaría saber más información sobre orientación a objetos en JAVA', '2019-04-09', 0, 1, 9);
 
 -- --------------------------------------------------------
 
@@ -245,7 +254,9 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nif`, `nombre`, `password`, `tipo`, `imagen_personal`, `email`, `biografia`, `id_centro`, `id_token`) VALUES
-(1, '49900414M', 'esteban', 'esteban', '', NULL, 'ESTEBAN@GMAIL.COM', 'YEEP', 1, NULL);
+(1, '49900414M', 'esteban', 'esteban', 'profesor', NULL, 'ESTEBAN@GMAIL.COM', 'YEEP', 1, 'cb3e506415afbb409cb19b54cbde0d8f0f4e5493c18e35fbd1dff30da3291ae4872f5f405a22e0b77c0e8531629125a57aa3'),
+(2, '49645331S', 'oscar', '1234', 'alumno', NULL, 'oscarcj98@gmail.com', NULL, 1, '0d4d0dba16454ffa25902f90d437789a88c2ec2c4566d2515b6eda2bce1d6ec263add2a6e81e03902bec43fc20044e42efb9'),
+(4, 'dwasdwas', 'dwasdwas', 'dwasdwas', 'Alumno', NULL, 'dwasdwas@gmail.com', NULL, 1, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -285,7 +296,8 @@ ALTER TABLE `curso`
 --
 ALTER TABLE `post`
   ADD PRIMARY KEY (`id_post`),
-  ADD KEY `fk_post_alumno` (`id_alumno`);
+  ADD KEY `fk_post_alumno` (`id_alumno`),
+  ADD KEY `fk_post_asignatura` (`id_asignatura`);
 
 --
 -- Indices de la tabla `post_vs_tema`
@@ -383,7 +395,7 @@ ALTER TABLE `curso`
 -- AUTO_INCREMENT de la tabla `post`
 --
 ALTER TABLE `post`
-  MODIFY `id_post` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_post` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `post_vs_tema`
@@ -431,7 +443,7 @@ ALTER TABLE `tema`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas
@@ -460,7 +472,8 @@ ALTER TABLE `curso`
 -- Filtros para la tabla `post`
 --
 ALTER TABLE `post`
-  ADD CONSTRAINT `fk_post_alumno` FOREIGN KEY (`id_alumno`) REFERENCES `alumno` (`id_alumno`);
+  ADD CONSTRAINT `fk_post_alumno` FOREIGN KEY (`id_alumno`) REFERENCES `alumno` (`id_alumno`),
+  ADD CONSTRAINT `fk_post_asignatura` FOREIGN KEY (`id_asignatura`) REFERENCES `asignatura` (`id_asignatura`);
 
 --
 -- Filtros para la tabla `post_vs_tema`
