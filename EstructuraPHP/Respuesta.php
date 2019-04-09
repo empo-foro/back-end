@@ -225,4 +225,11 @@ class Respuesta extends Tabla
         }
     }
 
+
+    function comentariosPost ($id){
+
+        $resultado = self::$conn->query("select * from respuesta where id_post = '". $id ."'");
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

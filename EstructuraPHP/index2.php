@@ -74,7 +74,8 @@ switch ($verb) {
 
                     if (get_class($objeto) == "Post") {
 
-                        $id_post= filter_input(INPUT_GET,"id");
+                        $id_post = filter_input(INPUT_GET,"id");
+
                         if (!empty($id_post)){
 
                             $datos = $objeto->asignaturaPost($id_post);
@@ -84,6 +85,32 @@ switch ($verb) {
                         } else {
 
                             $http->setHttpHeaders(400, new Response("No hay post disponibles", false));
+
+                        }
+
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                    break;
+
+                case ("comentariosPost"):
+
+                    if (get_class($objeto) == "Respuesta") {
+
+                        $id_respuesta = filter_input(INPUT_GET, "id");
+
+                        if (!empty($id_respuesta)){
+
+                            $datos = $objeto->comentariosPost($id_respuesta);
+
+                            $http->setHttpHeaders(200, new Response("Listado de comentarios", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay comentarios disponibles", false));
 
                         }
 

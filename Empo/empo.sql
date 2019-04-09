@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 08-04-2019 a las 13:11:32
+-- Tiempo de generación: 09-04-2019 a las 12:41:11
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.10
 
@@ -133,7 +133,8 @@ CREATE TABLE `post` (
 --
 
 INSERT INTO `post` (`id_post`, `titulo`, `cuerpo`, `fecha`, `cerrado`, `id_alumno`, `id_asignatura`) VALUES
-(4, 'Orientación a objetos', 'Me gustaría saber más información sobre orientación a objetos en JAVA', '2019-04-09', 0, 1, 9);
+(4, 'Orientación a objetos', 'Me gustaría saber más información sobre orientación a objetos en JAVA', '2019-04-09', 0, 1, 9),
+(6, 'PHP', 'Necesito ayuda con PHP', '2019-04-11', 0, 1, 11);
 
 -- --------------------------------------------------------
 
@@ -190,8 +191,17 @@ CREATE TABLE `respuesta` (
   `fecha` date NOT NULL,
   `id_post` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
-  `id_respuesta_padre` int(11) NOT NULL
+  `id_respuesta_padre` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `respuesta`
+--
+
+INSERT INTO `respuesta` (`id_respuesta`, `asunto`, `texto`, `fecha`, `id_post`, `id_usuario`, `id_respuesta_padre`) VALUES
+(2, 'Progrmación', 'Buenas, quedamos en la cafetería para la clase de repaso', '2019-04-10', 4, 2, NULL),
+(3, 'PHP', 'Yo te puedo ayudar con PHP', '2019-04-10', 4, 2, 2),
+(7, 'PHP', 'Mañana repasamos PHP', '2019-04-11', 6, 4, NULL);
 
 -- --------------------------------------------------------
 
@@ -395,7 +405,7 @@ ALTER TABLE `curso`
 -- AUTO_INCREMENT de la tabla `post`
 --
 ALTER TABLE `post`
-  MODIFY `id_post` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_post` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `post_vs_tema`
@@ -419,7 +429,7 @@ ALTER TABLE `profesor_vs_asignatura`
 -- AUTO_INCREMENT de la tabla `respuesta`
 --
 ALTER TABLE `respuesta`
-  MODIFY `id_respuesta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_respuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `respuesta_guardada`
