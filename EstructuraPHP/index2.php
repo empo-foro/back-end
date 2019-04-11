@@ -43,7 +43,34 @@ switch ($verb) {
 
         /** Si el parámetro $operacion ha recibido un valor cargaremos la operación con su case correspondiente */
         if (!empty($operacion)) {
+
             switch ($operacion) {
+
+                case ("etiquetasPost"):
+
+                    if (get_class($objeto) == "Post_vs_Tema") {
+
+                        $id_post = filter_input(INPUT_GET, "id_post");
+
+                        if (!empty($id_post)) {
+
+                            $datos = $objeto->etiquetasPost($id_post);
+
+                            $http->setHttpHeaders(200, new Response("Listado de etiquetas", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay etiquetas disponibles", false));
+
+                        }
+
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                    break;
 
                 case ("listarUsuarios"):
 
@@ -288,7 +315,7 @@ switch ($verb) {
                     }
                     break;
 
-               /* case ("registroUsuario"):
+               case ("registroUsuario"):
 
                     if (get_class($objeto) == "Usuario") {
 
@@ -316,20 +343,23 @@ switch ($verb) {
                                 $objeto->id_usuario = 1;
 
                             } else {
+
                                 $http->setHttpHeaders(400, new Response("Se necesita un id de curso", false));
                             }
 
                             $http->setHttpHeaders(200, new Response("Registro correcto", true));
 
                         } else {
+
                             $http->setHttpHeaders(400, new Response("Registro incorrecto", false));
                         }
 
                     } else {
+
                         $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación registroUsuario", $controller));
                     }
 
-                    break; */
+                    break;
 
                 case ("getAsignaturas"):
 
@@ -422,14 +452,17 @@ switch ($verb) {
         if (!empty($id)) {
 
             /** Cargaremos los datos del objeto si no existe un registro con el $id indicado devolveremos un error */
+
             try {
                 $objeto->loadById($id);
+
+                $objeto->delete();
+
             } catch (Exception $ex) {
                 $http->setHttpHeaders(400, new Response($ex->getMessage()));
                 die();
             }
 
-            $objeto->delete();
             $http->setHttpHeaders(200, new Response("Registro borrado correctamente"));
 
         } else {

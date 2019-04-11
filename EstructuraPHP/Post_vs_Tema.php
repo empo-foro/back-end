@@ -142,5 +142,11 @@ class Post_vs_Tema extends Tabla
         }
     }
 
+    function etiquetasPost ($id){
+
+        $resultado = self::$conn->query("select * from post_vs_tema where id_post = '" . $id . "'");
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+    }
 
 }

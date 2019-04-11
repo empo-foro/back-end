@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 09-04-2019 a las 12:41:11
+-- Tiempo de generación: 23-04-2019 a las 12:17:17
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.10
 
@@ -33,13 +33,6 @@ CREATE TABLE `alumno` (
   `id_usuario` int(11) NOT NULL,
   `id_curso` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `alumno`
---
-
-INSERT INTO `alumno` (`id_alumno`, `id_usuario`, `id_curso`) VALUES
-(1, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -128,14 +121,6 @@ CREATE TABLE `post` (
   `id_asignatura` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `post`
---
-
-INSERT INTO `post` (`id_post`, `titulo`, `cuerpo`, `fecha`, `cerrado`, `id_alumno`, `id_asignatura`) VALUES
-(4, 'Orientación a objetos', 'Me gustaría saber más información sobre orientación a objetos en JAVA', '2019-04-09', 0, 1, 9),
-(6, 'PHP', 'Necesito ayuda con PHP', '2019-04-11', 0, 1, 11);
-
 -- --------------------------------------------------------
 
 --
@@ -158,13 +143,6 @@ CREATE TABLE `profesor` (
   `id_profesor` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `profesor`
---
-
-INSERT INTO `profesor` (`id_profesor`, `id_usuario`) VALUES
-(1, 1);
 
 -- --------------------------------------------------------
 
@@ -193,15 +171,6 @@ CREATE TABLE `respuesta` (
   `id_usuario` int(11) NOT NULL,
   `id_respuesta_padre` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `respuesta`
---
-
-INSERT INTO `respuesta` (`id_respuesta`, `asunto`, `texto`, `fecha`, `id_post`, `id_usuario`, `id_respuesta_padre`) VALUES
-(2, 'Progrmación', 'Buenas, quedamos en la cafetería para la clase de repaso', '2019-04-10', 4, 2, NULL),
-(3, 'PHP', 'Yo te puedo ayudar con PHP', '2019-04-10', 4, 2, 2),
-(7, 'PHP', 'Mañana repasamos PHP', '2019-04-11', 6, 4, NULL);
 
 -- --------------------------------------------------------
 
@@ -240,6 +209,13 @@ CREATE TABLE `tema` (
   `nombre` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `tema`
+--
+
+INSERT INTO `tema` (`id_tema`, `nombre`) VALUES
+(1, 'Selects en BBDD');
+
 -- --------------------------------------------------------
 
 --
@@ -264,7 +240,6 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nif`, `nombre`, `password`, `tipo`, `imagen_personal`, `email`, `biografia`, `id_centro`, `id_token`) VALUES
-(1, '49900414M', 'esteban', 'esteban', 'profesor', NULL, 'ESTEBAN@GMAIL.COM', 'YEEP', 1, 'cb3e506415afbb409cb19b54cbde0d8f0f4e5493c18e35fbd1dff30da3291ae4872f5f405a22e0b77c0e8531629125a57aa3'),
 (2, '49645331S', 'oscar', '1234', 'alumno', NULL, 'oscarcj98@gmail.com', NULL, 1, '0d4d0dba16454ffa25902f90d437789a88c2ec2c4566d2515b6eda2bce1d6ec263add2a6e81e03902bec43fc20044e42efb9'),
 (4, 'dwasdwas', 'dwasdwas', 'dwasdwas', 'Alumno', NULL, 'dwasdwas@gmail.com', NULL, 1, NULL);
 
@@ -411,7 +386,7 @@ ALTER TABLE `post`
 -- AUTO_INCREMENT de la tabla `post_vs_tema`
 --
 ALTER TABLE `post_vs_tema`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `profesor`
@@ -447,7 +422,7 @@ ALTER TABLE `respuesta_reportada`
 -- AUTO_INCREMENT de la tabla `tema`
 --
 ALTER TABLE `tema`
-  MODIFY `id_tema` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_tema` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -482,15 +457,15 @@ ALTER TABLE `curso`
 -- Filtros para la tabla `post`
 --
 ALTER TABLE `post`
-  ADD CONSTRAINT `fk_post_alumno` FOREIGN KEY (`id_alumno`) REFERENCES `alumno` (`id_alumno`),
-  ADD CONSTRAINT `fk_post_asignatura` FOREIGN KEY (`id_asignatura`) REFERENCES `asignatura` (`id_asignatura`);
+  ADD CONSTRAINT `fk_post_alumno` FOREIGN KEY (`id_alumno`) REFERENCES `alumno` (`id_alumno`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_post_asignatura` FOREIGN KEY (`id_asignatura`) REFERENCES `asignatura` (`id_asignatura`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `post_vs_tema`
 --
 ALTER TABLE `post_vs_tema`
-  ADD CONSTRAINT `fk_post_vs_tema_post` FOREIGN KEY (`id_post`) REFERENCES `post` (`id_post`),
-  ADD CONSTRAINT `fk_post_vs_tema_tema` FOREIGN KEY (`id_tema`) REFERENCES `tema` (`id_tema`);
+  ADD CONSTRAINT `fk_post_vs_tema_post` FOREIGN KEY (`id_post`) REFERENCES `post` (`id_post`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_post_vs_tema_tema` FOREIGN KEY (`id_tema`) REFERENCES `tema` (`id_tema`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `profesor`
@@ -509,9 +484,9 @@ ALTER TABLE `profesor_vs_asignatura`
 -- Filtros para la tabla `respuesta`
 --
 ALTER TABLE `respuesta`
-  ADD CONSTRAINT `fk_respuesta_padre` FOREIGN KEY (`id_respuesta_padre`) REFERENCES `respuesta` (`id_respuesta`),
-  ADD CONSTRAINT `fk_respuesta_post` FOREIGN KEY (`id_post`) REFERENCES `post` (`id_post`),
-  ADD CONSTRAINT `fk_respuesta_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
+  ADD CONSTRAINT `fk_respuesta_padre` FOREIGN KEY (`id_respuesta_padre`) REFERENCES `respuesta` (`id_respuesta`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_respuesta_post` FOREIGN KEY (`id_post`) REFERENCES `post` (`id_post`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_respuesta_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `respuesta_guardada`
