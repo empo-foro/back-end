@@ -43,7 +43,34 @@ switch ($verb) {
 
         /** Si el parámetro $operacion ha recibido un valor cargaremos la operación con su case correspondiente */
         if (!empty($operacion)) {
+
             switch ($operacion) {
+
+                case ("etiquetasPost"):
+
+                    if (get_class($objeto) == "Post_vs_Tema") {
+
+                        $id_post = filter_input(INPUT_GET, "id_post");
+
+                        if (!empty($id_post)) {
+
+                            $datos = $objeto->etiquetasPost($id_post);
+
+                            $http->setHttpHeaders(200, new Response("Listado de etiquetas", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay etiquetas disponibles", false));
+
+                        }
+
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                    break;
 
                 case ("listarUsuarios"):
 
