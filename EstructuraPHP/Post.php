@@ -212,11 +212,22 @@ class Post extends Tabla
         }
     }
 
-
+    /**
+     * Función que te devuelve todos los post de una asignatura en función a su id
+     */
     function asignaturaPost($id){
 
         $resultado = self::$conn->query("select * from post where id_asignatura = '" . $id ."'");
         return $resultado->fetchAll(PDO::FETCH_ASSOC);
 
+    }
+
+    /**
+     * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
+     * @return array Devuelve un Array asociativo con los datos del objeto
+     */
+    function serialize()
+    {
+        return $this->valores();
     }
 }
