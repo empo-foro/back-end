@@ -232,11 +232,11 @@ class Centro extends Tabla
         }
     }
 
-    /*function registroUsuario($id_centro)
+    function registroUsuario($id_centro)
     {
         $user = $this->getAll(['id_centro' => $id_centro]);
         return $user;
-    }*/
+    }
 
     /**
      * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id

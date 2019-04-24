@@ -200,5 +200,4 @@ class Alumno extends Tabla
         return $this->valores();
     }
 
-
 }

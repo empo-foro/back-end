@@ -107,7 +107,7 @@ switch ($verb) {
 
                             $datos = $objeto->asignaturaPost($id_post);
 
-                            $http->setHttpHeaders(200, new Response("Listado de post", $datos));
+                            $http->setHttpHeaders(200, new Response("Listado  de post", $datos));
 
                         } else {
 
@@ -186,6 +186,7 @@ switch ($verb) {
             } else {
 
                 $datos = $objeto->getAll();
+
                 $http->setHttpHeaders(200, new Response("Lista $controller", $datos));
 
             }
@@ -333,14 +334,16 @@ switch ($verb) {
 
                         if (!empty($datos)) {
 
-                            if (!empty($objeto->id_usuario)) {
+                            if (!empty($raw->id_centro)) {
 
                                 $objeto = new Usuario();
                                 $objeto->nif = $nif;
                                 $objeto->nombre = $nombre;
                                 $objeto->password = $password;
                                 $objeto->email = $email;
-                                $objeto->id_usuario = 1;
+                                $objeto->id_usuario = "";
+
+                                $objeto->updateOrInsert();
 
                             } else {
 
@@ -350,7 +353,7 @@ switch ($verb) {
                             $http->setHttpHeaders(200, new Response("Registro correcto", true));
 
                         } else {
-
+                            var_dump($usuario);
                             $http->setHttpHeaders(400, new Response("Registro incorrecto", false));
                         }
 

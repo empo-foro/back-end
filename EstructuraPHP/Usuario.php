@@ -317,10 +317,10 @@ class Usuario extends Tabla
 
     }
 
-    /*function registroUsuario($id_usuario)
+    function registroUsuario($id_usuario)
     {
         $user = $this->getAll(['id_usuario' => $id_usuario]);
         return $user;
-    }*/
+    }
 
 }
