@@ -248,4 +248,30 @@ class Centro extends Tabla
         return $this->valores();
     }
 
+    /**
+     * Función con el que comprobamos que un usuario este logueado dentro de la aplicación
+     * @param $id_token String Token del usuario
+     * @return mixed Object Datos del usuario logueado
+     */
+    function checkToken($id_token)
+    {
+        $user = $this->getAll(['id_token' => $id_token]);
+        return $user;
+
+    }
+
+    /**
+     * Función que busca y borra el token del usuario que ha cerrado sesión
+     * @param $id_token String Token del usuario
+     * @throws Exception Si no encuentra el token lanzamos la excepción que nos devuelve MySQL
+     */
+    function logOut($id_token)
+    {
+        $user = $this->getAll(['id_token' => $id_token]);
+        $u = new Centro();
+        $u->loadById($user[0]["id_centro"]);
+        $u->id_token = null;
+        $u->updateOrInsert();
+    }
+
 }

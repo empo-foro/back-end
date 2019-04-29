@@ -282,18 +282,25 @@ class Usuario extends Tabla
         return $this->valores();
     }
 
+    /**
+     * Función que busca y borra el token del usuario que ha cerrado sesión
+     * @param $id_token String Token del usuario
+     * @throws Exception Si no encuentra el token lanzamos la excepción que nos devuelve MySQL
+     */
     function logOut($id_token)
     {
-
         $user = $this->getAll(['id_token' => $id_token]);
-
         $u = new Usuario();
         $u->loadById($user[0]["id_usuario"]);
         $u->id_token = null;
         $u->updateOrInsert();
-
     }
 
+    /**
+     * Método con el que comprobamos que un usuario este logueado dentro de la aplicación
+     * @param $id_token String Token del usuario
+     * @return mixed Object Datos del usuario logueado
+     */
     function checkToken($id_token)
     {
         $user = $this->getAll(['id_token' => $id_token]);
