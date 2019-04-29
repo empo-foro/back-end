@@ -236,6 +236,7 @@ class Centro extends Tabla
     {
         $user = $this->getAll(['id_centro' => $id_centro]);
         return $user;
+
     }
 
     /**

@@ -301,7 +301,8 @@ class Usuario extends Tabla
 
     }
 
-    function getAsignaturas($id_token){
+    function getAsignaturas($id_token)
+    {
 
         $resultado = self::$conn->query("select asignatura.* from asignatura inner join alumno on asignatura.id_curso = alumno.id_curso
                 INNER JOIN usuario on alumno.id_usuario = usuario.id_usuario
@@ -310,7 +311,8 @@ class Usuario extends Tabla
 
     }
 
-    function listarUsuarios($tipo){
+    function listarUsuarios($tipo)
+    {
 
         $user = $this->getAll(['tipo' => $tipo]);
         return $user;
@@ -321,6 +323,39 @@ class Usuario extends Tabla
     {
         $user = $this->getAll(['id_usuario' => $id_usuario]);
         return $user;
+        try {
+
+            self::$conn->beginTransaction();
+            $resultado = self::$conn->query("insert into tabla values ('','','')");
+            $resultadoDos = self::$conn->query("insert into tabla2 values ('','','')");
+            self::$conn->commit();
+
+        } catch (Exception $ex) {
+            self::$conn->rollBack();
+        }
+
+        $resultado = self::$conn->query("insert into tabla values ('','','')");
+
+        if ($resultado == true) {
+
+            $resultadoDos = self::$conn->query("insert into tabla2 values ('','','')");
+
+        } else {
+
+            echo "Tabla uno incorrecta";
+
+        }
+
+        if ($resultadoDos == true) {
+
+            $user->updateOrInsert();
+
+        } else {
+
+            echo "Tabla dos incorrecta";
+
+        }
+
     }
 
 }
