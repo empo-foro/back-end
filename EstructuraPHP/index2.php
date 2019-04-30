@@ -46,6 +46,32 @@ switch ($verb) {
 
             switch ($operacion) {
 
+                case ("getUsuarioByToken"):
+
+                    if (get_class($objeto) == "Usuario") {
+
+                        $id_token = filter_input( INPUT_GET, "id_token");
+
+                        if (!empty($id_token)) {
+
+                            $datos = $objeto ->getUsuarioByToken($id_token);
+
+                            $http->setHttpHeaders(200, new Response("Datos usuario", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay usuarios registrados", false));
+
+                        }
+
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                        break;
+
                 case ("etiquetasPost"):
 
                     if (get_class($objeto) == "Post_vs_Tema") {

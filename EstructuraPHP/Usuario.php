@@ -361,6 +361,12 @@ class Usuario extends Tabla
 
         }
 
+    }
+
+    function getUsuarioByToken($id_token){
+
+        $user = $this->getAll(['id_token' => $id_token]);
+        return $user;
 
     }
 
