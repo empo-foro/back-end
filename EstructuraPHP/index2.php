@@ -46,6 +46,31 @@ switch ($verb) {
 
             switch ($operacion) {
 
+                case ("getUserRespuestasByToken") :
+
+                    if (get_class($objeto) == "Respuesta") {
+
+                        $id_token = filter_input(INPUT_GET, "id_token");
+
+                        if (!empty($id_token)) {
+
+                            $datos = $objeto->getUserRespuestasByToken($id_token);
+
+                            $http->setHttpHeaders(200, new Response("Listado de respuestas de un usuario", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay respuestas disponibles", false));
+
+                        }
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                    break;
+
                 case ("getPostByUserToken") :
 
                     if (get_class($objeto) == "Post") {
@@ -56,7 +81,7 @@ switch ($verb) {
 
                             $datos = $objeto->getPostByUserToken($id_token);
 
-                            $http->setHttpHeaders(200, new Response("Listado  de post de un usuario", $datos));
+                            $http->setHttpHeaders(200, new Response("Listado de post de un usuario", $datos));
 
                         } else {
 

@@ -225,6 +225,16 @@ class Respuesta extends Tabla
         }
     }
 
+    function getUserRespuestasByToken($id_token){
+
+        $resultado = self::$conn->query("SELECT respuesta.* FROM respuesta inner join 
+        post on respuesta.id_post = post.id_post inner join
+        alumno on post.id_alumno = alumno.id_alumno inner join 
+        usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "'");
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
 
     function comentariosPost ($id){
 
