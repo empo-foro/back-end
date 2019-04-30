@@ -222,6 +222,14 @@ class Post extends Tabla
 
     }
 
+    function getPostByUserToken($id_token){
+
+        $resultado = self::$conn->query("SELECT post.* FROM post inner join 
+        alumno on post.id_alumno = alumno.id_alumno inner join 
+        usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "'");
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /**
      * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
      * @return array Devuelve un Array asociativo con los datos del objeto

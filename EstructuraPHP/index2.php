@@ -46,6 +46,31 @@ switch ($verb) {
 
             switch ($operacion) {
 
+                case ("getPostByUserToken") :
+
+                    if (get_class($objeto) == "Post") {
+
+                        $id_token = filter_input(INPUT_GET, "id_token");
+
+                        if (!empty($id_token)) {
+
+                            $datos = $objeto->getPostByUserToken($id_token);
+
+                            $http->setHttpHeaders(200, new Response("Listado  de post de un usuario", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay post disponibles", false));
+
+                        }
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                    break;
+
                 case ("getUsuarioByToken"):
 
                     if (get_class($objeto) == "Usuario") {
