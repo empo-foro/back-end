@@ -8,6 +8,7 @@
 require_once 'Tabla.php';
 require_once 'Centro.php';
 require_once 'Profesor.php';
+require_once 'Alumno.php';
 
 class Usuario extends Tabla
 {
@@ -326,42 +327,40 @@ class Usuario extends Tabla
 
     }
 
-    function registroUsuario($id_usuario)
+    function registroUsuario($u, $data)
     {
-        $user = $this->getAll(['id_usuario' => $id_usuario]);
-        return $user;
-        try {
 
-            self::$conn->beginTransaction();
-            $resultado = self::$conn->query("insert into tabla values ('','','')");
-            $resultadoDos = self::$conn->query("insert into tabla2 values ('','','')");
-            self::$conn->commit();
+        $user = new Usuario();
 
-        } catch (Exception $ex) {
-            self::$conn->rollBack();
+        foreach ($u as $campo => $valor) {
+            $user->$campo = $valor;
         }
 
-        $resultado = self::$conn->query("insert into tabla values ('','','')");
+        $user->updateOrInsert();
 
-        if ($resultado == true) {
+        if (!empty($user)) {
 
-            $resultadoDos = self::$conn->query("insert into tabla2 values ('','','')");
+            if ($user->tipo === "Alumno") {
 
-        } else {
+                $a = new Alumno();
+                $a->setId_Curso($data->id_curso);
+                $a->setId_Usuario($user->id_usuario);
+                $a->updateOrInsert();
 
-            echo "Tabla uno incorrecta";
+                return true;
+
+            } else if ($user->tipo === "Profesor") {
+
+                $p = new Profesor();
+                $p->setId_Usuario($user->id_usuario);
+                $p->updateOrInsert();
+
+                return true;
+
+            }
 
         }
 
-        if ($resultadoDos == true) {
-
-            $user->updateOrInsert();
-
-        } else {
-
-            echo "Tabla dos incorrecta";
-
-        }
 
     }
 

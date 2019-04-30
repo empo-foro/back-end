@@ -326,35 +326,24 @@ switch ($verb) {
                         $usuario = $raw[0];
                         $datosTipo = $raw[1];
 
-                        foreach ($usuario as $campo => $valor) {
-                            $objeto->$campo = $valor;
-                        }
+                        if($usuario->tipo === "Alumno" || $usuario->tipo === "Profesor") {
 
-                        $datos = $objeto->registroUsuario($raw = "id_centro");
+                            $result = $objeto->registroUsuario($usuario, $datosTipo);
 
-                        if (!empty($datos)) {
+                            if (!empty($result)) {
 
-                            if (!empty($raw->id_centro)) {
-
-                                $objeto = new Usuario();
-                                $objeto->nif = $nif;
-                                $objeto->nombre = $nombre;
-                                $objeto->password = $password;
-                                $objeto->email = $email;
-                                $objeto->id_usuario = "";
-
-                                $objeto->updateOrInsert();
+                                $http->setHttpHeaders(200, new Response("Registro correcto", true));
 
                             } else {
 
-                                $http->setHttpHeaders(400, new Response("Se necesita un id de curso", false));
+                                $http->setHttpHeaders(400, new Response("Registro incorrecto", false));
+
                             }
 
-                            $http->setHttpHeaders(200, new Response("Registro correcto", true));
-
                         } else {
-                            var_dump($usuario);
-                            $http->setHttpHeaders(400, new Response("Registro incorrecto", false));
+
+                            $http->setHttpHeaders(400, new Response("Tipo de usuario incorrecto tiene que ser Alumno o Profesor", false));
+
                         }
 
                     } else {
