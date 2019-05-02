@@ -180,11 +180,20 @@ class Usuario extends Tabla
      * @param $email
      * @param $password
      * @return string
+     * @throws
      */
     function logIn($email, $password)
     {
-        $user = $this->getAll(['email' => $email, 'password' => $password]);
-        return $user;
+        $user = $this->getAll(['email' => $email]);
+
+        $u = new Usuario();
+        $u->loadById($user[0]["id_usuario"]);
+        var_dump(password_verify($password, $u->password));
+        if(password_verify($password, $u->password)) {
+            return $user;
+        } else {
+            throw new Exception("Password incorrecto");
+        }
     }
 
     /**
@@ -333,7 +342,11 @@ class Usuario extends Tabla
         $user = new Usuario();
 
         foreach ($u as $campo => $valor) {
-            $user->$campo = $valor;
+            if ($campo == "password") {
+                $user->$campo = password_hash($valor, PASSWORD_DEFAULT);
+            } else {
+                $user->$campo = $valor;
+            }
         }
 
         $user->updateOrInsert();
@@ -363,7 +376,8 @@ class Usuario extends Tabla
 
     }
 
-    function getUsuarioByToken($id_token){
+    function getUsuarioByToken($id_token)
+    {
 
         $user = $this->getAll(['id_token' => $id_token]);
         return $user;
