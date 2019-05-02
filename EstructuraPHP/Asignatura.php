@@ -173,6 +173,17 @@ class Asignatura extends Tabla
 
     }
 
+    function getUserAsignaturaByToken($id_token){
+
+        $resultado = self::$conn->query("select asignatura.* from asignatura 
+        inner join curso on curso.id_curso=asignatura.id_curso 
+        inner join alumno on curso.id_curso=alumno.id_curso 
+        inner join usuario on Alumno.id_usuario=usuario.id_usuario 
+        where usuario.id_token = '". $id_token . "'");
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
     /**
      * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
      * @return array Devuelve un Array asociativo con los datos del objeto
