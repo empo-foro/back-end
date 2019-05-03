@@ -188,7 +188,6 @@ class Usuario extends Tabla
 
         $u = new Usuario();
         $u->loadById($user[0]["id_usuario"]);
-        var_dump(password_verify($password, $u->password));
         if(password_verify($password, $u->password)) {
             return $user;
         } else {
