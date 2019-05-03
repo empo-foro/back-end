@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 02-05-2019 a las 13:15:04
+-- Tiempo de generación: 03-05-2019 a las 13:01:16
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.10
 
@@ -39,8 +39,7 @@ CREATE TABLE `alumno` (
 --
 
 INSERT INTO `alumno` (`id_alumno`, `id_usuario`, `id_curso`) VALUES
-(1, 2, 1),
-(8, 9, 1);
+(1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -59,7 +58,8 @@ CREATE TABLE `asignatura` (
 --
 
 INSERT INTO `asignatura` (`id_asignatura`, `nombre`, `id_curso`) VALUES
-(1, 'Programación', 1);
+(1, 'Programación', 1),
+(2, 'PHP', 1);
 
 -- --------------------------------------------------------
 
@@ -84,7 +84,7 @@ CREATE TABLE `centro` (
 --
 
 INSERT INTO `centro` (`id_centro`, `nif`, `nombre`, `password`, `biografia`, `descripcion`, `imagen_personal`, `email`, `id_token`) VALUES
-(1, '12345678M', 'Stucom', '1234', NULL, NULL, NULL, NULL, NULL);
+(1, '123456789A', 'centro', 'centro', NULL, NULL, NULL, 'centro@gmail.com', NULL);
 
 -- --------------------------------------------------------
 
@@ -126,7 +126,8 @@ CREATE TABLE `post` (
 --
 
 INSERT INTO `post` (`id_post`, `titulo`, `cuerpo`, `fecha`, `cerrado`, `id_alumno`, `id_asignatura`) VALUES
-(4, 'PHP', 'JuanPablo', '2019-04-03', 0, 1, 1);
+(1, 'Base de datos', 'Esto es PHP', '2019-05-03', 0, 1, 2),
+(2, 'Swing', 'Esto es progamación', '2019-05-02', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -178,13 +179,6 @@ CREATE TABLE `respuesta` (
   `id_usuario` int(11) NOT NULL,
   `id_respuesta_padre` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `respuesta`
---
-
-INSERT INTO `respuesta` (`id_respuesta`, `asunto`, `texto`, `fecha`, `id_post`, `id_usuario`, `id_respuesta_padre`) VALUES
-(2, 'PHP', 'Soy mejor', '2019-04-30', 4, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -247,8 +241,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nif`, `nombre`, `password`, `tipo`, `imagen_personal`, `email`, `biografia`, `id_centro`, `id_token`) VALUES
-(2, '49645331S!', 'oscar', '1234', 'Alumno', NULL, 'oscarcj98@gmail.com', NULL, 1, '6a80fec1f2fbcfc17a7470daea1944e3c8eb10b5cb6d19ad3bb23ecf3b6a598fc5bfad8cfcf8c0b5685d9ba2b2891c830b50'),
-(9, '321543678M', 'Revenge', '$2y$10$6ggVbqmQ4TGnN7mxZ5FnkObSpCig2Ra0nTDkAJViXOZLTnYZCaGdG', 'Alumno', NULL, 'hash3@gmail.com', NULL, 1, '6c6885e9f9041bf0fe4281eb9849db38058fe22d38798a54ae5f6080c246b596e3651f5b91674d3564c28ce7fbf5fe695953');
+(1, '321543678M', 'Usuario', '$2y$10$ul2sK270hxO/FRteGj3xdOtOcr9z5YrIwp5Ks57.hlLDtKYAHqzD2', 'Alumno', NULL, 'usuario@gmail.com', NULL, 1, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -363,13 +356,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `alumno`
 --
 ALTER TABLE `alumno`
-  MODIFY `id_alumno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_alumno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `asignatura`
 --
 ALTER TABLE `asignatura`
-  MODIFY `id_asignatura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_asignatura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `centro`
@@ -387,7 +380,7 @@ ALTER TABLE `curso`
 -- AUTO_INCREMENT de la tabla `post`
 --
 ALTER TABLE `post`
-  MODIFY `id_post` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_post` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `post_vs_tema`
@@ -411,7 +404,7 @@ ALTER TABLE `profesor_vs_asignatura`
 -- AUTO_INCREMENT de la tabla `respuesta`
 --
 ALTER TABLE `respuesta`
-  MODIFY `id_respuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_respuesta` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `respuesta_guardada`
@@ -435,7 +428,7 @@ ALTER TABLE `tema`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
