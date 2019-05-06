@@ -47,14 +47,15 @@ switch ($verb) {
             switch ($operacion) {
 
                 case ("getUserAsignaturaByToken"):
-
                     if (get_class($objeto) =="Asignatura") {
 
                         $id_token=filter_input(INPUT_GET, "id_token");
 
                         if (!empty($id_token)){
-
-                            $datos = $objeto->getUserAsignaturaByToken($id_token);
+                            require_once 'Usuario.php';
+                            $u=new Usuario();
+                            $user = $u->checkToken($id_token);
+                            $datos = $objeto->getUserAsignaturaByToken($id_token, $user[0]["tipo"]);
 
                             $http->setHttpHeaders(200, new Response("Listado de asignaturas de un usuario", $datos));
 
@@ -332,7 +333,6 @@ switch ($verb) {
                                     $type = new Alumno();
                                     $type->id_usuario = $u->id_usuario;
                                     $type->id_curso = $_POST["id_curso"];
-                                    var_dump($type);
                                     $type->updateOrInsert();
 
                                 } elseif (!empty($_POST['id_curso']) && $_POST['tipo'] == "Profesor") {
@@ -567,3 +567,9 @@ switch ($verb) {
     default:
         $http->setHttpHeaders(405, new Response("El método no es válido", $verb));
 }
+
+/*
+ * Función asignaturas que imparte el profesor.
+ * Usuario logueado, count de post creados y count de respuestas con el token
+ * Función de las respuestas guardadas por el token
+ * */
