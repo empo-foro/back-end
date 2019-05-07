@@ -46,6 +46,30 @@ switch ($verb) {
 
             switch ($operacion) {
 
+                case ("getCountByToken") :
+
+                    if (get_clase($objeto) == "Usuario") {
+
+                        $id_token=filter_input(INPUT_GET, "id_token");
+
+                        if (!empty($id_token)){
+
+                            $datos= $objeto->getCouuntByToken($id_token);
+
+                            $http->setHttpHeaders(200, new Response("Counts", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay registros disponibles", false));
+
+                        }
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                    break;
                 case ("getUserAsignaturaByToken"):
                     if (get_class($objeto) =="Asignatura") {
 
@@ -231,11 +255,11 @@ switch ($verb) {
 
                     if (get_class($objeto) == "Respuesta") {
 
-                        $id_respuesta = filter_input(INPUT_GET, "id");
+                        $id_post = filter_input(INPUT_GET, "id_post");
 
-                        if (!empty($id_respuesta)){
+                        if (!empty($id_post)){
 
-                            $datos = $objeto->comentariosPost($id_respuesta);
+                            $datos = $objeto->comentariosPost($id_post);
 
                             $http->setHttpHeaders(200, new Response("Listado de comentarios", $datos));
 
@@ -359,11 +383,6 @@ switch ($verb) {
 
                         $datos = file_get_contents("php://input");
                         $raw = json_decode($datos);
-
-                        /*¿Cuando envia información por raw o por form-data?
-                         *
-                         * $email = filter_input(INPUT_POST, "email");
-                          $password = filter_input(INPUT_POST, "password");*/
 
                         $datos = $objeto->logIn($raw->email, $raw->password);
 
@@ -569,7 +588,7 @@ switch ($verb) {
 }
 
 /*
- * Función asignaturas que imparte el profesor.
  * Usuario logueado, count de post creados y count de respuestas con el token
- * Función de las respuestas guardadas por el token
+ * Ordenar post "order by id descendent".
+ * Todas las respuestas de un post
  * */

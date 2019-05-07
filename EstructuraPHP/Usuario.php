@@ -383,4 +383,27 @@ class Usuario extends Tabla
 
     }
 
+    /**
+     * Función que te devulve un count de  los post creados y las respuestas de un usuario logueado
+     */
+
+    function getCountByToken($id_token){
+
+        $array= array();
+
+        //Post
+        $resultado = self::$conn->query("SELECT cout (post.*) FROM post inner join 
+        alumno on post.id_alumno = alumno.id_alumno inner join 
+        usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "'");
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+        //Respuesta
+        $resultado = self::$conn->query("SELECT count (respuesta.*) FROM respuesta inner join 
+        post on respuesta.id_post = post.id_post inner join
+        alumno on post.id_alumno = alumno.id_alumno inner join 
+        usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "'");
+        return $resultadoDos->fetchAll(PDO::FETCH_ASSOC);
+
+        array_push($resultado, $resultadoDos);
+    }
 }
