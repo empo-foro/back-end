@@ -152,6 +152,9 @@ class Respuesta_reportada extends Tabla
         return array_combine($this->fields, $valores);
     }
 
+    /**
+     * Función que modifica o inserta un registro
+     */
     function updateOrInsert()
     {
         $respuesta_reportada = $this->valores();
@@ -174,6 +177,10 @@ class Respuesta_reportada extends Tabla
 
     }
 
+    /**
+     * Función que elimina un registro de la base de datos si conicide el id con el que le pasamos
+     * @throws Exception
+     */
     function delete()
     {
         if(!empty($this->id_reporte)) {

@@ -95,6 +95,11 @@ class Respuesta_Guardada extends Tabla
         $this->num_fields = $num_fields;
     }
 
+    /**
+     * Función que nos devuelve un registro de la base de datos si coincide con el id que le pasamos
+     * @param $id
+     * @throws Exception
+     */
     function loadById($id)
     {
         $Respuesta_Guardada = $this->getById($id);
@@ -108,6 +113,10 @@ class Respuesta_Guardada extends Tabla
         }
     }
 
+    /**
+     * Función que nos devuelve un array associativo, con los datos del objeto de la clase
+     * @return array
+     */
     private function valores()
     {
         $valores = array_map(function ($v) {
@@ -116,6 +125,9 @@ class Respuesta_Guardada extends Tabla
         return array_combine($this->fields, $valores);
     }
 
+    /**
+     * Función que modifica o inserta un registro
+     */
     function updateOrInsert()
     {
         $Respuesta_Guardada = $this->valores();
@@ -129,6 +141,10 @@ class Respuesta_Guardada extends Tabla
         }
     }
 
+    /**
+     * Función que elimina un registro de la base de datos si conicide el id con el que le pasamos
+     * @throws Exception
+     */
     function delete()
     {
         if (!empty($this->id_guardado)) {

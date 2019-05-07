@@ -222,6 +222,11 @@ class Post extends Tabla
 
     }
 
+    /**
+     * @param $id_token
+     * @return mixed
+     * Función que devuelve los post de un usuario según su token
+     */
     function getPostByUserToken($id_token){
 
         $resultado = self::$conn->query("SELECT post.* FROM post inner join 
