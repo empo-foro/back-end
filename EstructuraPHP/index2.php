@@ -48,7 +48,7 @@ switch ($verb) {
 
                 case ("getCountByToken") :
 
-                    if (get_clase($objeto) == "Usuario") {
+                    if (get_class($objeto) == "Usuario") {
 
                         $id_token=filter_input(INPUT_GET, "id_token");
 
@@ -589,6 +589,4 @@ switch ($verb) {
 
 /*
  * Usuario logueado, count de post creados y count de respuestas con el token
- * Ordenar post "order by id descendent".
- * Todas las respuestas de un post
  * */

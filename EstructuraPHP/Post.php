@@ -226,7 +226,7 @@ class Post extends Tabla
 
         $resultado = self::$conn->query("SELECT post.* FROM post inner join 
         alumno on post.id_alumno = alumno.id_alumno inner join 
-        usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "'");
+        usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "' order by id_post asc");
         return $resultado->fetchAll(PDO::FETCH_ASSOC);
     }
 
