@@ -427,4 +427,16 @@ class Usuario extends Tabla
         return $array;
 
     }
+
+    /**
+     * @param $id_token
+     * @return mixed
+     * Función que te devuelve la ID del alumno según el token del usuario.
+     */
+    function getAlumnoByToken($id_token){
+
+        $resultado = self::$conn->query("select id_alumno from Alumno inner join 
+        usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "'");
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

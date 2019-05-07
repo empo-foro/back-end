@@ -46,6 +46,32 @@ switch ($verb) {
 
             switch ($operacion) {
 
+                case ("getAlumnoByToken") :
+
+                    if(get_class($objeto) == "Usuario") {
+
+                        $id_token=filter_input(INPUT_GET, "id_token");
+
+                        if (!empty($id_token)){
+
+                            $datos= $objeto->getAlumnoByToken($id_token);
+
+                            $http->setHttpHeaders(200, new Response("ID Alumno", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay alumnos disponibles", false));
+
+                        }
+
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                    break;
+
                 case ("getCountByToken") :
 
                     if (get_class($objeto) == "Usuario") {
@@ -63,6 +89,7 @@ switch ($verb) {
                             $http->setHttpHeaders(400, new Response("No hay registros disponibles", false));
 
                         }
+
                     } else {
 
                         $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
@@ -586,3 +613,7 @@ switch ($verb) {
     default:
         $http->setHttpHeaders(405, new Response("El método no es válido", $verb));
 }
+/*
+ * Devuelve el id del alumno segun el token, Select id_alumno inner joing id
+ * Cifrar contraseña centros
+ * */
