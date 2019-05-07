@@ -317,6 +317,11 @@ class Usuario extends Tabla
 
     }
 
+    /**
+     * @param $id_token
+     * @return mixed
+     * Función que devuelve las asignaturas del usuario logueado
+     */
     function getAsignaturas($id_token)
     {
 
@@ -327,6 +332,11 @@ class Usuario extends Tabla
 
     }
 
+    /**
+     * @param $tipo
+     * @return mixed
+     * Función que lista los usuarios según su tipo
+     */
     function listarUsuarios($tipo)
     {
 
@@ -335,6 +345,12 @@ class Usuario extends Tabla
 
     }
 
+    /**
+     * @param $u
+     * @param $data
+     * @return bool
+     * Función que registra un usuario como alumno o profesor según su tipo
+     */
     function registroUsuario($u, $data)
     {
 
@@ -375,6 +391,11 @@ class Usuario extends Tabla
 
     }
 
+    /**
+     * @param $id_token
+     * @return mixed
+     * Función que te devuelve el usuario según el token indicado
+     */
     function getUsuarioByToken($id_token)
     {
 
@@ -389,21 +410,21 @@ class Usuario extends Tabla
 
     function getCountByToken($id_token){
 
-        $array= array();
-
         //Post
-        $resultado = self::$conn->query("SELECT cout (post.*) FROM post inner join 
+        $resultado = self::$conn->query("SELECT COUNT(*) as posts FROM post inner join 
         alumno on post.id_alumno = alumno.id_alumno inner join 
         usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "'");
-        return $resultado->fetchAll(PDO::FETCH_ASSOC);
+        $countPost = $resultado->fetchAll(PDO::FETCH_ASSOC);
 
         //Respuesta
-        $resultado = self::$conn->query("SELECT count (respuesta.*) FROM respuesta inner join 
+        $resultado = self::$conn->query("SELECT COUNT(*) as respuestas FROM respuesta inner join 
         post on respuesta.id_post = post.id_post inner join
         alumno on post.id_alumno = alumno.id_alumno inner join 
         usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "'");
-        return $resultadoDos->fetchAll(PDO::FETCH_ASSOC);
+        $countRespuesta = $resultado->fetchAll(PDO::FETCH_ASSOC);
 
-        array_push($resultado, $resultadoDos);
+        $array = array_merge($countPost, $countRespuesta);
+        return $array;
+
     }
 }

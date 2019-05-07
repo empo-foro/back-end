@@ -54,7 +54,7 @@ switch ($verb) {
 
                         if (!empty($id_token)){
 
-                            $datos= $objeto->getCouuntByToken($id_token);
+                            $datos= $objeto->getCountByToken($id_token);
 
                             $http->setHttpHeaders(200, new Response("Counts", $datos));
 
@@ -586,7 +586,3 @@ switch ($verb) {
     default:
         $http->setHttpHeaders(405, new Response("El método no es válido", $verb));
 }
-
-/*
- * Usuario logueado, count de post creados y count de respuestas con el token
- * */
