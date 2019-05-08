@@ -183,6 +183,9 @@ class Respuesta extends Tabla
         return array_combine($this->fields, $valores);
     }
 
+    /**
+     * Función que inserta y actualiza en la base de datos.
+     */
     function updateOrInsert()
     {
         $respuesta = $this->valores();

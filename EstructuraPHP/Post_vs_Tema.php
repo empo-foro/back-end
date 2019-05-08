@@ -95,7 +95,11 @@ class Post_vs_Tema extends Tabla
         $this->num_fields = $num_fields;
     }
 
-
+    /**
+     * Función que nos devuelve un registro de la base de datos si coincide con el id que le pasamos
+     * @param $id
+     * @throws Exception
+     */
     function loadById($id)
     {
         $Post_vs_Tema = $this->getById($id);
@@ -109,6 +113,10 @@ class Post_vs_Tema extends Tabla
         }
     }
 
+    /**
+     * Función que nos devuelve un array associativo, con los datos del objeto de la clase
+     * @return array
+     */
     private function valores()
     {
         $valores = array_map(function ($v) {
@@ -117,6 +125,9 @@ class Post_vs_Tema extends Tabla
         return array_combine($this->fields, $valores);
     }
 
+    /**
+     * Función que modifica o inserta un registro
+     */
     function updateOrInsert()
     {
         $Post_vs_Tema = $this->valores();
@@ -130,6 +141,10 @@ class Post_vs_Tema extends Tabla
         }
     }
 
+    /**
+     * Función que elimina un registro de la base de datos si conicide el id con el que le pasamos
+     * @throws Exception
+     */
     function delete()
     {
         if (!empty($this->id_post_vs_tema)) {
@@ -142,6 +157,11 @@ class Post_vs_Tema extends Tabla
         }
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     * Función que te devuelve las etiquetas de un post
+     */
     function etiquetasPost ($id){
 
         $resultado = self::$conn->query("select * from post_vs_tema where id_post = '" . $id . "'");

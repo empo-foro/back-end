@@ -616,6 +616,5 @@ switch ($verb) {
         $http->setHttpHeaders(405, new Response("El método no es válido", $verb));
 }
 /*
- * Devuelve el id del alumno segun el token, Select id_alumno inner joing id
  * Cifrar contraseña centros
  * */
