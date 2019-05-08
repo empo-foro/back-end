@@ -227,7 +227,7 @@ class Post extends Tabla
   function asignaturaPost($id)
   {
 
-    $resultado = self::$conn->query("select * from post where id_asignatura = '" . $id . "'");
+    $resultado = self::$conn->query("select * from post where id_asignatura = '" . $id . "' order by id_post desc");
     return $resultado->fetchAll(PDO::FETCH_ASSOC);
 
   }
