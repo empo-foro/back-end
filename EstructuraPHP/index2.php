@@ -539,11 +539,13 @@ switch ($verb) {
             if (!empty($raw)) {
 
                 $datos = json_decode($raw);
+
                 foreach ($datos as $campo => $valor) {
                     $objeto->$campo = $valor;
                 }
 
                 $objeto->updateOrInsert();
+
                 $http->setHttpHeaders(200, new Response(get_class($objeto) . " creado", $objeto->serialize()));
                 // $http->setHttpHeaders(400, new Response("Ha ocurrido un error al crear"));
 
