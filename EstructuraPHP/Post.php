@@ -25,7 +25,7 @@ class Post extends Tabla
   public function __construct()
   {
     $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-    parent::__construct("Post", "id_post", $fields);
+    parent::__construct("post", "id_post", $fields);
 
   }
 

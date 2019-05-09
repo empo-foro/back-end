@@ -18,7 +18,7 @@ class Respuesta_Guardada extends Tabla
     public function __construct()
     {
         $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-        parent::__construct("Respuesta_Guardada", "id_guardado", $fields);
+        parent::__construct("respuesta_guardada", "id_guardado", $fields);
     }
 
     /* Setters y Getters */

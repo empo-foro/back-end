@@ -20,7 +20,7 @@ class Curso extends Tabla
     public function __construct()
     {
         $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-        parent::__construct("Curso", "id_curso", $fields);
+        parent::__construct("curso", "id_curso", $fields);
 
     }
 

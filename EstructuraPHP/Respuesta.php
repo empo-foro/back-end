@@ -24,7 +24,7 @@ class Respuesta extends Tabla
     public function __construct()
     {
         $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-        parent::__construct("Respuesta", "id_respuesta", $fields);
+        parent::__construct("respuesta", "id_respuesta", $fields);
 
     }
 

@@ -25,7 +25,7 @@ class Tema extends Tabla
     public function __construct()
     {
         $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-        parent::__construct("Tema", "id_tema", $fields);
+        parent::__construct("tema", "id_tema", $fields);
     }
 
     //GETTER Y SETTERS

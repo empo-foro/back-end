@@ -22,7 +22,7 @@ class Respuesta_reportada extends Tabla
     public function __construct()
     {
         $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-        parent::__construct("Respuesta_reportada", "id_reporte", $fields);
+        parent::__construct("respuesta_reportada", "id_reporte", $fields);
 
     }
 

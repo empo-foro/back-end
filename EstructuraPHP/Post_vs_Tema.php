@@ -18,7 +18,7 @@ class Post_vs_Tema extends Tabla
     public function __construct()
     {
         $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-        parent::__construct("Post_vs_Tema", "id_post_vs_tema", $fields);
+        parent::__construct("post_vs_tema", "id_post_vs_tema", $fields);
     }
 
     /* Setters y Getters */

@@ -30,7 +30,7 @@ class Usuario extends Tabla
     public function __construct()
     {
         $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-        parent::__construct("Usuario", "id_usuario", $fields);
+        parent::__construct("usuario", "id_usuario", $fields);
     }
 
     /* Getters y Setters */
