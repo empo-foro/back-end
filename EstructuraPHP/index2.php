@@ -48,7 +48,7 @@ switch ($verb) {
 
                 case ("getAlumnoByToken") :
 
-                    if(get_class($objeto) == "usuario") {
+                    if(get_class($objeto) == "Usuario") {
 
                         $id_token=filter_input(INPUT_GET, "id_token");
 
@@ -74,7 +74,7 @@ switch ($verb) {
 
                 case ("getCountByToken") :
 
-                    if (get_class($objeto) == "usuario") {
+                    if (get_class($objeto) == "Usuario") {
 
                         $id_token=filter_input(INPUT_GET, "id_token");
 
@@ -98,7 +98,7 @@ switch ($verb) {
 
                     break;
                 case ("getUserAsignaturaByToken"):
-                    if (get_class($objeto) =="asignatura") {
+                    if (get_class($objeto) =="Asignatura") {
 
                         $id_token=filter_input(INPUT_GET, "id_token");
 
@@ -127,7 +127,7 @@ switch ($verb) {
 
                 case ("getUserRespuestasByToken") :
 
-                    if (get_class($objeto) == "respuesta") {
+                    if (get_class($objeto) == "Respuesta") {
 
                         $id_token = filter_input(INPUT_GET, "id_token");
 
@@ -152,7 +152,7 @@ switch ($verb) {
 
                 case ("getPostByUserToken") :
 
-                    if (get_class($objeto) == "post") {
+                    if (get_class($objeto) == "Post") {
 
                         $id_token = filter_input(INPUT_GET, "id_token");
 
@@ -177,7 +177,7 @@ switch ($verb) {
 
                 case ("getUsuarioByToken"):
 
-                    if (get_class($objeto) == "usuario") {
+                    if (get_class($objeto) == "Usuario") {
 
                         $id_token = filter_input( INPUT_GET, "id_token");
 
@@ -203,7 +203,7 @@ switch ($verb) {
 
                 case ("etiquetasPost"):
 
-                    if (get_class($objeto) == "post_vs_tema") {
+                    if (get_class($objeto) == "Post_vs_Tema") {
 
                         $id_post = filter_input(INPUT_GET, "id_post");
 
@@ -229,7 +229,7 @@ switch ($verb) {
 
                 case ("listarUsuarios"):
 
-                    if (get_class($objeto) == "usuario") {
+                    if (get_class($objeto) == "Usuario") {
 
                         $tipo = filter_input(INPUT_GET, "tipo");
 
@@ -254,7 +254,7 @@ switch ($verb) {
 
                 case ("asignaturaPost"):
 
-                    if (get_class($objeto) == "post") {
+                    if (get_class($objeto) == "Post") {
 
                         $id_post = filter_input(INPUT_GET,"id");
 
@@ -280,7 +280,7 @@ switch ($verb) {
 
                 case ("comentariosPost"):
 
-                    if (get_class($objeto) == "respuesta") {
+                    if (get_class($objeto) == "Respuesta") {
 
                         $id_post = filter_input(INPUT_GET, "id_post");
 
@@ -306,7 +306,7 @@ switch ($verb) {
 
                 case ("logOut"):
 
-                    if (get_class($objeto) == "usuario" || get_class($objeto) == "centro") {
+                    if (get_class($objeto) == "Usuario" || get_class($objeto) == "Centro") {
 
                         $id_token = filter_input(INPUT_GET, "id_token");
 
@@ -406,7 +406,7 @@ switch ($verb) {
                     break;
                 case ("logIn"):
 
-                    if (get_class($objeto) == "usuario" || get_class($objeto) == "centro") {
+                    if (get_class($objeto) == "Usuario" || get_class($objeto) == "Centro") {
 
                         $datos = file_get_contents("php://input");
                         $raw = json_decode($datos);
@@ -418,11 +418,11 @@ switch ($verb) {
 
                             $objeto = new $controller;
 
-                            if (get_class($objeto) == "usuario") {
+                            if (get_class($objeto) == "Usuario") {
 
                                 $objeto->loadById($datos[0]['id_usuario']);
 
-                            } elseif (get_class($objeto) == "centro") {
+                            } elseif (get_class($objeto) == "Centro") {
 
                                 $objeto->loadById($datos['id_centro']);
 
@@ -444,7 +444,7 @@ switch ($verb) {
 
                 case ("checkToken"):
 
-                    if (get_class($objeto) == "usuario" || get_class($objeto) == "centro") {
+                    if (get_class($objeto) == "Usuario" || get_class($objeto) == "Centro") {
 
                         $datos = file_get_contents("php://input");
                         $raw = json_decode($datos);
@@ -467,7 +467,7 @@ switch ($verb) {
 
                case ("registroUsuario"):
 
-                    if (get_class($objeto) == "usuario") {
+                    if (get_class($objeto) == "Usuario") {
 
                         $datos = file_get_contents("php://input");
                         $raw = json_decode($datos);
@@ -504,7 +504,7 @@ switch ($verb) {
 
                 case ("getAsignaturas"):
 
-                    if (get_class($objeto) == "usuario") {
+                    if (get_class($objeto) == "Usuario") {
 
                         $datos = file_get_contents("php://input");
                         $raw = json_decode($datos);
