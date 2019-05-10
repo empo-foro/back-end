@@ -18,6 +18,13 @@ require_once 'Response.php';
 /** @var String $verb Recoge el método con el que han enviado la petición */
 $verb = $_SERVER['REQUEST_METHOD'];
 
+header("Acces-Control-Allow-Headers: X-API-KEY, Origin, X-Request-With, Content-Type, Accept, Access-Control-Request-Method");
+header("Acces-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Allow: GET, POST, OPTIONS, PUT, DELETE");
+if($verb == "OPTIONS") {
+    die();
+}
+
 /** @var String $controller Tabla con la que vamos a trabajar */
 $controller = filter_input(INPUT_GET, "controller");
 /** @var String $operacion Parámetro opcional si queremos realizar una operación especial */
