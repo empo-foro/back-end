@@ -348,7 +348,7 @@ class Usuario extends Tabla
     /**
      * @param $u
      * @param $data
-     * @return bool
+     * @return Usuario
      * Función que registra un usuario como alumno o profesor según su tipo
      */
     function registroUsuario($u, $data)
@@ -367,28 +367,18 @@ class Usuario extends Tabla
         $user->updateOrInsert();
 
         if (!empty($user)) {
-
             if ($user->tipo === "Alumno") {
-
                 $a = new Alumno();
                 $a->setId_Curso($data->id_curso);
                 $a->setId_Usuario($user->id_usuario);
                 $a->updateOrInsert();
-
-                return true;
-
             } else if ($user->tipo === "Profesor") {
-
                 $p = new Profesor();
                 $p->setId_Usuario($user->id_usuario);
                 $p->updateOrInsert();
-
-                return true;
-
             }
-
+            return $user;
         }
-
     }
 
     /**

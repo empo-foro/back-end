@@ -358,11 +358,6 @@ switch ($verb) {
     case("POST"):
         if (!empty($operacion)) {
             switch ($operacion) {
-                case ("datatables"):
-                    require_once ('DataTables.php');
-                    $data = new DataTables();
-                    echo $data->getUsersData();
-                    break;
                 case("registro-usuarios"):
 
                     if (!empty($_FILES) && !empty($_POST['tipo'])) {
@@ -493,7 +488,7 @@ switch ($verb) {
 
                             if (!empty($result)) {
 
-                                $http->setHttpHeaders(200, new Response("Registro correcto", true));
+                                $http->setHttpHeaders(200, new Response("Registro correcto", $result->serialize()));
 
                             } else {
 
