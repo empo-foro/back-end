@@ -360,8 +360,8 @@ switch ($verb) {
             switch ($operacion) {
                 case ("datatables"):
                     require_once ('DataTables.php');
-                    $data = new getUsersData();
-                    return $data->getData();
+                    $data = new DataTables();
+                    return $data->getUsersData();
                     break;
                 case("registro-usuarios"):
 
