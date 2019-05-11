@@ -22,7 +22,7 @@ class Respuesta_reportada extends Tabla
     public function __construct()
     {
         $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-        parent::__construct("Respuesta_reportada", "id_reporte", $fields);
+        parent::__construct("respuesta_reportada", "id_reporte", $fields);
 
     }
 
@@ -152,6 +152,9 @@ class Respuesta_reportada extends Tabla
         return array_combine($this->fields, $valores);
     }
 
+    /**
+     * Función que modifica o inserta un registro
+     */
     function updateOrInsert()
     {
         $respuesta_reportada = $this->valores();
@@ -174,6 +177,10 @@ class Respuesta_reportada extends Tabla
 
     }
 
+    /**
+     * Función que elimina un registro de la base de datos si conicide el id con el que le pasamos
+     * @throws Exception
+     */
     function delete()
     {
         if(!empty($this->id_reporte)) {

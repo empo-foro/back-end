@@ -8,6 +8,7 @@
 require_once 'Tabla.php';
 require_once 'Centro.php';
 require_once 'Profesor.php';
+require_once 'Alumno.php';
 
 class Usuario extends Tabla
 {
@@ -179,11 +180,19 @@ class Usuario extends Tabla
      * @param $email
      * @param $password
      * @return string
+     * @throws
      */
     function logIn($email, $password)
     {
-        $user = $this->getAll(['email' => $email, 'password' => $password]);
-        return $user;
+        $user = $this->getAll(['email' => $email]);
+
+        $u = new Usuario();
+        $u->loadById($user[0]["id_usuario"]);
+        if(password_verify($password, $u->password)) {
+            return $user;
+        } else {
+            throw new Exception("Password incorrecto");
+        }
     }
 
     /**
@@ -308,7 +317,13 @@ class Usuario extends Tabla
 
     }
 
-    function getAsignaturas($id_token){
+    /**
+     * @param $id_token
+     * @return mixed
+     * Función que devuelve las asignaturas del usuario logueado
+     */
+    function getAsignaturas($id_token)
+    {
 
         $resultado = self::$conn->query("select asignatura.* from asignatura inner join alumno on asignatura.id_curso = alumno.id_curso
                 INNER JOIN usuario on alumno.id_usuario = usuario.id_usuario
@@ -317,17 +332,111 @@ class Usuario extends Tabla
 
     }
 
-    function listarUsuarios($tipo){
+    /**
+     * @param $tipo
+     * @return mixed
+     * Función que lista los usuarios según su tipo
+     */
+    function listarUsuarios($tipo)
+    {
 
         $user = $this->getAll(['tipo' => $tipo]);
         return $user;
 
     }
 
-    function registroUsuario($id_usuario)
+    /**
+     * @param $u
+     * @param $data
+     * @return bool
+     * Función que registra un usuario como alumno o profesor según su tipo
+     */
+    function registroUsuario($u, $data)
     {
-        $user = $this->getAll(['id_usuario' => $id_usuario]);
-        return $user;
+
+        $user = new Usuario();
+
+        foreach ($u as $campo => $valor) {
+            if ($campo == "password") {
+                $user->$campo = password_hash($valor, PASSWORD_DEFAULT);
+            } else {
+                $user->$campo = $valor;
+            }
+        }
+
+        $user->updateOrInsert();
+
+        if (!empty($user)) {
+
+            if ($user->tipo === "Alumno") {
+
+                $a = new Alumno();
+                $a->setId_Curso($data->id_curso);
+                $a->setId_Usuario($user->id_usuario);
+                $a->updateOrInsert();
+
+                return true;
+
+            } else if ($user->tipo === "Profesor") {
+
+                $p = new Profesor();
+                $p->setId_Usuario($user->id_usuario);
+                $p->updateOrInsert();
+
+                return true;
+
+            }
+
+        }
+
     }
 
+    /**
+     * @param $id_token
+     * @return mixed
+     * Función que te devuelve el usuario según el token indicado
+     */
+    function getUsuarioByToken($id_token)
+    {
+
+        $user = $this->getAll(['id_token' => $id_token]);
+        return $user;
+
+    }
+
+    /**
+     * Función que te devulve un count de  los post creados y las respuestas de un usuario logueado
+     */
+
+    function getCountByToken($id_token){
+
+        //Post
+        $resultado = self::$conn->query("SELECT COUNT(*) as posts FROM post inner join 
+        alumno on post.id_alumno = alumno.id_alumno inner join 
+        usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "'");
+        $countPost = $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+        //Respuesta
+        $resultado = self::$conn->query("SELECT COUNT(*) as respuestas FROM respuesta inner join 
+        post on respuesta.id_post = post.id_post inner join
+        alumno on post.id_alumno = alumno.id_alumno inner join 
+        usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "'");
+        $countRespuesta = $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+        $array = array_merge($countPost, $countRespuesta);
+        return $array;
+
+    }
+
+    /**
+     * @param $id_token
+     * @return mixed
+     * Función que te devuelve la ID del alumno según el token del usuario.
+     */
+    function getAlumnoByToken($id_token){
+
+        $resultado = self::$conn->query("select id_alumno from Alumno inner join 
+        usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "'");
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

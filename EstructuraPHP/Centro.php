@@ -232,10 +232,16 @@ class Centro extends Tabla
         }
     }
 
+    /**
+     * @param $id_centro
+     * @return mixed
+     * Función que registra un usuario en un centro.
+     */
     function registroUsuario($id_centro)
     {
         $user = $this->getAll(['id_centro' => $id_centro]);
         return $user;
+
     }
 
     /**

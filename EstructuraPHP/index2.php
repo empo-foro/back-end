@@ -18,6 +18,13 @@ require_once 'Response.php';
 /** @var String $verb Recoge el método con el que han enviado la petición */
 $verb = $_SERVER['REQUEST_METHOD'];
 
+header("Acces-Control-Allow-Headers: X-API-KEY, Origin, X-Request-With, Content-Type, Accept, Access-Control-Request-Method");
+header("Acces-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Allow: GET, POST, OPTIONS, PUT, DELETE");
+if($verb == "OPTIONS") {
+    die();
+}
+
 /** @var String $controller Tabla con la que vamos a trabajar */
 $controller = filter_input(INPUT_GET, "controller");
 /** @var String $operacion Parámetro opcional si queremos realizar una operación especial */
@@ -45,6 +52,161 @@ switch ($verb) {
         if (!empty($operacion)) {
 
             switch ($operacion) {
+
+                case ("getAlumnoByToken") :
+
+                    if(get_class($objeto) == "Usuario") {
+
+                        $id_token=filter_input(INPUT_GET, "id_token");
+
+                        if (!empty($id_token)){
+
+                            $datos= $objeto->getAlumnoByToken($id_token);
+
+                            $http->setHttpHeaders(200, new Response("ID Alumno", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay alumnos disponibles", false));
+
+                        }
+
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                    break;
+
+                case ("getCountByToken") :
+
+                    if (get_class($objeto) == "Usuario") {
+
+                        $id_token=filter_input(INPUT_GET, "id_token");
+
+                        if (!empty($id_token)){
+
+                            $datos= $objeto->getCountByToken($id_token);
+
+                            $http->setHttpHeaders(200, new Response("Counts", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay registros disponibles", false));
+
+                        }
+
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                    break;
+                case ("getUserAsignaturaByToken"):
+                    if (get_class($objeto) =="Asignatura") {
+
+                        $id_token=filter_input(INPUT_GET, "id_token");
+
+                        if (!empty($id_token)){
+                            require_once 'Usuario.php';
+                            $u=new Usuario();
+                            $user = $u->checkToken($id_token);
+                            $datos = $objeto->getUserAsignaturaByToken($id_token, $user[0]["tipo"]);
+
+                            $http->setHttpHeaders(200, new Response("Listado de asignaturas de un usuario", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay asignaturas disponibles", false));
+
+                        }
+                    }
+
+                    else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                    break;
+
+                case ("getUserRespuestasByToken") :
+
+                    if (get_class($objeto) == "Respuesta") {
+
+                        $id_token = filter_input(INPUT_GET, "id_token");
+
+                        if (!empty($id_token)) {
+
+                            $datos = $objeto->getUserRespuestasByToken($id_token);
+
+                            $http->setHttpHeaders(200, new Response("Listado de respuestas de un usuario", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay respuestas disponibles", false));
+
+                        }
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                    break;
+
+                case ("getPostByUserToken") :
+
+                    if (get_class($objeto) == "Post") {
+
+                        $id_token = filter_input(INPUT_GET, "id_token");
+
+                        if (!empty($id_token)) {
+
+                            $datos = $objeto->getPostByUserToken($id_token);
+
+                            $http->setHttpHeaders(200, new Response("Listado de post de un usuario", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay post disponibles", false));
+
+                        }
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                    break;
+
+                case ("getUsuarioByToken"):
+
+                    if (get_class($objeto) == "Usuario") {
+
+                        $id_token = filter_input( INPUT_GET, "id_token");
+
+                        if (!empty($id_token)) {
+
+                            $datos = $objeto ->getUsuarioByToken($id_token);
+
+                            $http->setHttpHeaders(200, new Response("Datos usuario", $datos));
+
+                        } else {
+
+                            $http->setHttpHeaders(400, new Response("No hay usuarios registrados", false));
+
+                        }
+
+                    } else {
+
+                        $http->setHttpHeaders(400, new Response("El controlador indicado no contiene la operación logOut", $controller));
+
+                    }
+
+                        break;
 
                 case ("etiquetasPost"):
 
@@ -127,11 +289,11 @@ switch ($verb) {
 
                     if (get_class($objeto) == "Respuesta") {
 
-                        $id_respuesta = filter_input(INPUT_GET, "id");
+                        $id_post = filter_input(INPUT_GET, "id_post");
 
-                        if (!empty($id_respuesta)){
+                        if (!empty($id_post)){
 
-                            $datos = $objeto->comentariosPost($id_respuesta);
+                            $datos = $objeto->comentariosPost($id_post);
 
                             $http->setHttpHeaders(200, new Response("Listado de comentarios", $datos));
 
@@ -233,7 +395,6 @@ switch ($verb) {
                                     $type = new Alumno();
                                     $type->id_usuario = $u->id_usuario;
                                     $type->id_curso = $_POST["id_curso"];
-                                    var_dump($type);
                                     $type->updateOrInsert();
 
                                 } elseif (!empty($_POST['id_curso']) && $_POST['tipo'] == "Profesor") {
@@ -260,11 +421,6 @@ switch ($verb) {
 
                         $datos = file_get_contents("php://input");
                         $raw = json_decode($datos);
-
-                        /*¿Cuando envia información por raw o por form-data?
-                         *
-                         * $email = filter_input(INPUT_POST, "email");
-                          $password = filter_input(INPUT_POST, "password");*/
 
                         $datos = $objeto->logIn($raw->email, $raw->password);
 
@@ -330,35 +486,24 @@ switch ($verb) {
                         $usuario = $raw[0];
                         $datosTipo = $raw[1];
 
-                        foreach ($usuario as $campo => $valor) {
-                            $objeto->$campo = $valor;
-                        }
+                        if($usuario->tipo === "Alumno" || $usuario->tipo === "Profesor") {
 
-                        $datos = $objeto->registroUsuario($raw = "id_centro");
+                            $result = $objeto->registroUsuario($usuario, $datosTipo);
 
-                        if (!empty($datos)) {
+                            if (!empty($result)) {
 
-                            if (!empty($raw->id_centro)) {
-
-                                $objeto = new Usuario();
-                                $objeto->nif = $nif;
-                                $objeto->nombre = $nombre;
-                                $objeto->password = $password;
-                                $objeto->email = $email;
-                                $objeto->id_usuario = "";
-
-                                $objeto->updateOrInsert();
+                                $http->setHttpHeaders(200, new Response("Registro correcto", true));
 
                             } else {
 
-                                $http->setHttpHeaders(400, new Response("Se necesita un id de curso", false));
+                                $http->setHttpHeaders(400, new Response("Registro incorrecto", false));
+
                             }
 
-                            $http->setHttpHeaders(200, new Response("Registro correcto", true));
-
                         } else {
-                            var_dump($usuario);
-                            $http->setHttpHeaders(400, new Response("Registro incorrecto", false));
+
+                            $http->setHttpHeaders(400, new Response("Tipo de usuario incorrecto tiene que ser Alumno o Profesor", false));
+
                         }
 
                     } else {
@@ -405,12 +550,13 @@ switch ($verb) {
             if (!empty($raw)) {
 
                 $datos = json_decode($raw);
-                var_dump($raw);
+
                 foreach ($datos as $campo => $valor) {
                     $objeto->$campo = $valor;
                 }
 
                 $objeto->updateOrInsert();
+
                 $http->setHttpHeaders(200, new Response(get_class($objeto) . " creado", $objeto->serialize()));
                 // $http->setHttpHeaders(400, new Response("Ha ocurrido un error al crear"));
 
@@ -480,3 +626,6 @@ switch ($verb) {
     default:
         $http->setHttpHeaders(405, new Response("El método no es válido", $verb));
 }
+/*
+ * Cifrar contraseña centros
+ * */

@@ -25,7 +25,7 @@ class Tema extends Tabla
     public function __construct()
     {
         $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-        parent::__construct("Tema", "id_tema", $fields);
+        parent::__construct("tema", "id_tema", $fields);
     }
 
     //GETTER Y SETTERS
@@ -85,7 +85,11 @@ class Tema extends Tabla
         }
     }
 
-
+    /**
+     * Función que nos devuelve un registro de la base de datos si coincide con el id que le pasamos
+     * @param $id
+     * @throws Exception
+     */
     public function loadById($id)
     {
         $tema = $this->getById($id);
@@ -98,6 +102,10 @@ class Tema extends Tabla
         }
     }
 
+    /**
+     * Función que nos devuelve un array associativo, con los datos del objeto de la clase
+     * @return array
+     */
     private function valores()
     {
         $valores = array_map(function ($v) {
@@ -106,6 +114,9 @@ class Tema extends Tabla
         return array_combine($this->fields, $valores);
     }
 
+    /**
+     * Función que modifica o inserta un registro
+     */
     function updateOrInsert(){
         $tema=$this->valores();
 
@@ -118,6 +129,10 @@ class Tema extends Tabla
         }
     }
 
+    /**
+     * Función que elimina un registro de la base de datos si conicide el id con el que le pasamos
+     * @throws Exception
+     */
     public function delete()
     {
         if (!empty($this->id_tema)){

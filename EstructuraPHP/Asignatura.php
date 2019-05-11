@@ -173,6 +173,30 @@ class Asignatura extends Tabla
 
     }
 
+    /***
+     * Función que te devuelve las asignaturas de un usuario.
+     * @return mixed
+     */
+    function getUserAsignaturaByToken($id_token, $tipo){
+        if($tipo=="Alumno"){
+            $resultado = self::$conn->query("select asignatura.* from asignatura 
+            inner join curso on curso.id_curso=asignatura.id_curso 
+            inner join alumno on curso.id_curso=alumno.id_curso 
+            inner join usuario on Alumno.id_usuario=usuario.id_usuario 
+            where usuario.id_token = '". $id_token . "'");
+        } elseif ($tipo=="Profesor"){
+            $resultado = self::$conn->query("SELECT asignatura.* FROM asignatura 
+            INNER JOIN profesor_vs_asignatura on asignatura.id_asignatura=profesor_vs_asignatura.id_asignatura 
+            INNER JOIN profesor on profesor.id_profesor=profesor_vs_asignatura.id_profesor 
+            INNER JOIN usuario on usuario.id_usuario=profesor.id_usuario 
+            WHERE usuario.id_token = '" . $id_token . "'");
+        } else {
+            throw new Exception("Tipo de Usuario incorrecto");
+        }
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
     /**
      * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
      * @return array Devuelve un Array asociativo con los datos del objeto

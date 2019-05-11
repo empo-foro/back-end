@@ -24,7 +24,7 @@ class Respuesta extends Tabla
     public function __construct()
     {
         $fields = array_slice(array_keys(get_object_vars($this)), 0, $this->num_fields);
-        parent::__construct("Respuesta", "id_respuesta", $fields);
+        parent::__construct("respuesta", "id_respuesta", $fields);
 
     }
 
@@ -183,6 +183,9 @@ class Respuesta extends Tabla
         return array_combine($this->fields, $valores);
     }
 
+    /**
+     * Función que inserta y actualiza en la base de datos.
+     */
     function updateOrInsert()
     {
         $respuesta = $this->valores();
@@ -223,6 +226,16 @@ class Respuesta extends Tabla
         } else {
             throw new Exception("La respuesta que quieres borrar no existe");
         }
+    }
+
+    function getUserRespuestasByToken($id_token){
+
+        $resultado = self::$conn->query("SELECT respuesta.* FROM respuesta inner join 
+        post on respuesta.id_post = post.id_post inner join
+        alumno on post.id_alumno = alumno.id_alumno inner join 
+        usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "'");
+        return $resultado->fetchAll(PDO::FETCH_ASSOC);
+
     }
 
 

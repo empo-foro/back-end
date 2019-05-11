@@ -96,6 +96,11 @@ class Profesor_vs_Asignatura extends Tabla
         }
     }
 
+    /**
+     * Función que nos devuelve un registro de la base de datos si coincide con el id que le pasamos
+     * @param $id
+     * @throws Exception
+     */
     function loadById($id)
     {
         $Profesor_vs_Asignatura=$this->getById($id);
@@ -117,6 +122,10 @@ class Profesor_vs_Asignatura extends Tabla
         }
     }
 
+    /**
+     * Función que nos devuelve un array associativo, con los datos del objeto de la clase
+     * @return array
+     */
     private function valores()
     {
         $valores = array_map(function ($v){
@@ -125,6 +134,9 @@ class Profesor_vs_Asignatura extends Tabla
         return array_combine($this->fields, $valores);
     }
 
+    /**
+     * Función que modifica o inserta un registro
+     */
     function updateOrInsert()
     {
         $profesor_vs_asignatura=$this->valores();
@@ -138,6 +150,10 @@ class Profesor_vs_Asignatura extends Tabla
         }
     }
 
+    /**
+     * Función que elimina un registro de la base de datos si conicide el id con el que le pasamos
+     * @throws Exception
+     */
     function delete()
     {
         if (!empty($this->id_profesor_vs_asignatura)){
