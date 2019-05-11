@@ -152,12 +152,12 @@ class Alumno extends Tabla
 
         unset($alumno['id_alumno']);
 
-        $this->usuario->updateOrInsert();
+        //$this->usuario->updateOrInsert();
         $alumno["id_usuario"] = $this->usuario->id_usuario;
 
         unset($alumno["usuario"]);
 
-        $this->curso->updateOrInsert();
+        //$this->curso->updateOrInsert();
         $alumno['id_curso'] = $this->curso->id_curso;
 
         unset($alumno['curso']);

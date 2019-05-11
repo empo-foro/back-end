@@ -243,7 +243,7 @@ class Usuario extends Tabla
         $usuario = $this->valores();
         unset($usuario['id_usuario']);
 
-        $this->centro->updateOrInsert();
+        //$this->centro->updateOrInsert();
         $usuario["id_centro"] = $this->centro->id_centro;
         unset($usuario["centro"]);
 

@@ -121,7 +121,7 @@ class Profesor extends Tabla
     {
         $profesor = $this->valores();
         unset($profesor['id_profesor']);
-        $this->usuario->updateOrInsert();
+        //$this->usuario->updateOrInsert();
         $profesor["id_usuario"] = $this->usuario->id_usuario;
         unset($profesor["usuario"]);
         if (empty($this->id_profesor)) {
