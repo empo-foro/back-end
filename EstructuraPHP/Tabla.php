@@ -9,10 +9,10 @@
 abstract class Tabla
 {
 
-    static $server = "localhost";
-    static $user = "root";
-    static $passwd = "";
-    static $database = "empo";
+    static $server = "mysql-empo.alwaysdata.net";
+    static $user = "empo";
+    static $passwd = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
+    static $database = "empo_empo";
 
     protected $table; //Nombre de la tabla
     protected $idField; //Nombre de la primary key de la tabla

@@ -196,6 +196,10 @@ switch ($verb) {
     case("POST"):
         if (!empty($operacion)) {
             switch ($operacion) {
+                case ("datatables"):
+                    $datatables = new DataTables();
+                    return $datatables->getData();
+                    break;
                 case("registro-usuarios"):
 
                     if (!empty($_FILES) && !empty($_POST['tipo'])) {
