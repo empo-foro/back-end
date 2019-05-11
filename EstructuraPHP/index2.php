@@ -361,7 +361,7 @@ switch ($verb) {
                 case ("datatables"):
                     require_once ('DataTables.php');
                     $data = new DataTables();
-                    return $data->getUsersData();
+                    echo $data->getUsersData();
                     break;
                 case("registro-usuarios"):
 
