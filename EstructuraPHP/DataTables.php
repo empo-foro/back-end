@@ -11,7 +11,7 @@ class DataTables
     public function getUsersData()
     {
 // DB table to use
-        $table = 'usuarios';
+        $table = 'usuario';
 
 // Table's primary key
         $primaryKey = 'id_usuario';
@@ -31,7 +31,7 @@ class DataTables
         $sql_details = array(
             'user' => 'empo',
             'pass' => 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
-            'db' => 'empo_empo',
+            'db' => 'empo',
             'host' => 'mysql-empo.alwaysdata.net'
         );
 
