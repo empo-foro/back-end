@@ -359,8 +359,9 @@ switch ($verb) {
         if (!empty($operacion)) {
             switch ($operacion) {
                 case ("datatables"):
-                    $datatables = new DataTables();
-                    return $datatables->getData();
+                    require_once ('DataTables.php');
+                    $data = new getUsersData();
+                    return $data->getData();
                     break;
                 case("registro-usuarios"):
 

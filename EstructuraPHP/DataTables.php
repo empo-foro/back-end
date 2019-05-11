@@ -8,7 +8,7 @@
 
 class DataTables
 {
-    public function getAlumnosData()
+    public function getUsersData()
     {
 // DB table to use
         $table = 'usuarios';
