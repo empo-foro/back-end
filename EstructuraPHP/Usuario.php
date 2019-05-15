@@ -425,8 +425,7 @@ class Usuario extends Tabla
      */
     function getAlumnoByToken($id_token){
 
-        $resultado = self::$conn->query("select id_alumno from alumno inner join 
-        usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '" . $id_token . "'");
+        $resultado = self::$conn->query("select id_alumno from alumno inner join usuario on alumno.id_usuario = usuario.id_usuario where usuario.id_token = '".$id_token."'");
         return $resultado->fetchAll(PDO::FETCH_ASSOC);
     }
 }

@@ -212,21 +212,23 @@ class Respuesta extends Tabla
         $respuesta = $this->valores();
         unset($respuesta['id_respuesta']);
 
-        $this->post->updateOrInsert();
+        //$this->post->updateOrInsert();
         $respuesta['id_post'] = $this->post->id_post;
         unset($respuesta['post']);
 
-        $this->usuario->updateOrInsert();
+        //$this->usuario->updateOrInsert();
         $respuesta['id_usuario'] = $this->usuario->id_usuario;
         unset($respuesta['usuario']);
 
-        $this->respuesta_padre->updateOrInsert();
-        $respuesta['id_respuesta_padre'] = $this->respuesta_padre->id_respuesta;
+        //$this->respuesta_padre->updateOrInsert();
+        if(!empty($respueta['id_respuesta_pade'])) {
+            $respuesta['id_respuesta_padre'] = $this->respuesta_padre->id_respuesta;
+        }
         unset($respuesta['respuesta_padre']);
-
+        
         if (empty($this->id_respuesta)) {
-            $this->insert($respuesta);
-            $this->id_respuesta == self::lastInsertId();
+            $lastId = $this->insert($respuesta);
+            $this->id_respuesta = $lastId;
         } else {
             $this->update($this->id_respuesta, $respuesta);
         }
@@ -264,6 +266,13 @@ class Respuesta extends Tabla
 
         $resultado = self::$conn->query("select * from respuesta where id_post = '". $id ."'");
         return $resultado->fetchAll(PDO::FETCH_ASSOC);
+    }
+    /**
+     * Función que llamamos desde la REST para devolver los valores cuando cogan al objeto por su id
+     * @return array Devuelve un Array asociativo con los datos del objeto
+     */
+    function serialize() {
+    return $this->valores();
     }
 
 }
