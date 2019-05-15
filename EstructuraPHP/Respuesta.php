@@ -100,6 +100,13 @@ class Respuesta extends Tabla
         $this->respuesta_padre = $respuesta_padre;
     }
 
+  public function setId_Post($id): void
+  {
+    $post = new Post();
+    $post->loadById($id);
+    $this->post = $post;
+  }
+
     /**
      * Esta función nos devolvera el valor de una propiedad pedida si existe el Getter de esa propiedad
      * @param nombre $name Nombre de la propiedad que queremos recoger
