@@ -182,7 +182,7 @@ class Asignatura extends Tabla
             $resultado = self::$conn->query("select asignatura.* from asignatura 
             inner join curso on curso.id_curso=asignatura.id_curso 
             inner join alumno on curso.id_curso=alumno.id_curso 
-            inner join usuario on Alumno.id_usuario=usuario.id_usuario 
+            inner join usuario on alumno.id_usuario=usuario.id_usuario 
             where usuario.id_token = '". $id_token . "'");
         } elseif ($tipo=="Profesor"){
             $resultado = self::$conn->query("SELECT asignatura.* FROM asignatura 
