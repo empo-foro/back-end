@@ -6,6 +6,7 @@
  * Time: 11:36
  */
 require_once 'Tabla.php';
+require_once 'Post.php';
 
 class Respuesta extends Tabla
 {
